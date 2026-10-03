@@ -6,10 +6,10 @@
   "workers_dev": true,
   "observability": { "enabled": false },
   "vars": {
-    "GITHUB_OWNER": "YOUR_GITHUB_USERNAME",
-    "GITHUB_REPO": "YOUR_REPOSITORY_NAME",
+    "GITHUB_OWNER": "qayiran",
+    "GITHUB_REPO": "ars-imageranker",
     "GITHUB_BRANCH": "main",
-    "ALLOWED_ORIGIN": "https://YOUR_GITHUB_USERNAME.github.io"
+    "ALLOWED_ORIGIN": "https://qayiran.github.io"
   },
   "ratelimits": [
     {
