@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "showcase-results",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "observability": { "enabled": false },
+  "vars": {
+    "GITHUB_OWNER": "YOUR_GITHUB_USERNAME",
+    "GITHUB_REPO": "YOUR_REPOSITORY_NAME",
+    "GITHUB_BRANCH": "main",
+    "ALLOWED_ORIGIN": "https://YOUR_GITHUB_USERNAME.github.io"
+  },
+  "ratelimits": [
+    {
+      "name": "SUBMISSIONS_LIMITER",
+      "namespace_id": "1001",
+      "simple": { "limit": 5, "period": 60 }
+    }
+  ]
+}
