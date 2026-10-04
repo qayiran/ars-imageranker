@@ -51,3 +51,6 @@
 @media(max-width:380px){.ranked-artwork-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.theme-control,.language-control{gap:6px}.theme-control select,.language-control select{padding-left:8px;padding-right:18px}.ranked-artwork-info h3{font-size:16px}}
 @media(max-width:720px){.comparison-header{display:block}.comparison-header .user-chip{display:inline-flex;max-width:100%;width:fit-content;margin-top:14px}.progress-panel{grid-template-columns:1fr;gap:9px}.progress-panel .locked-shuffle{justify-self:start}.progress-panel .progress-track{grid-column:1}.compare-tools{flex-direction:column;gap:13px}.compare-tools .tool-buttons{width:100%;justify-content:space-between;gap:12px}.compare-tools .tool-buttons button{white-space:nowrap}.compare-tools .session-hint{max-width:none;text-align:left}}
 @media(max-width:720px){.progress-panel .locked-shuffle{grid-column:1;grid-row:auto}}
+/* Recovery provenance stays alongside ordinary result metadata. */
+.manual-note { display: block; color: var(--muted); font-size: .72rem; line-height: 1.5; margin: .3rem 0 .55rem; }
+.pending-saves { margin-bottom: 1.3rem; }

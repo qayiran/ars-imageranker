@@ -2,6 +2,7 @@ import { t, locale, translateError } from './language.js';
 import { IMAGES, imageUrl } from './catalog.js';
 import { loadPublicResults } from './results-data.js';
 import { renderRanking } from './results-view.js';
+import { manualNote, resultDate } from './result-meta.js';
 import { buildLeaderboard } from './leaderboard.js';
 import { renderLeaderboard } from './leaderboard-view.js';
 const root = document.querySelector('#results-browser');
@@ -9,7 +10,6 @@ const escape = (value) => String(value).replace(/[&<>"']/g, (c) => ({ '&': '&amp
 let participants = [], sharedLoaded = false;
 let sharedError = '', query = '', order = 'newest', refreshId = 0;
 let participantBoard = buildLeaderboard([]);
-function dateLabel(date) { return new Date(date).toLocaleDateString(locale(), { year: 'numeric', month: 'short', day: 'numeric' }); }
 function filtered(items) {
   const search = query.trim().toLocaleLowerCase(locale());
   return items.filter((item) => !search || `${item.username} ${item.resultCode} ${item.rankings[0].name}`.toLocaleLowerCase(locale()).includes(search))
@@ -17,7 +17,7 @@ function filtered(items) {
 }
 function card(item) {
   const winner = item.rankings[0], artwork = IMAGES.find(({ id }) => id === winner.id);
-  return `<a class="result-card" href="#${encodeURIComponent(item.id)}" aria-label="${t`View ${escape(item.username)} ranking, result code ${item.resultCode}`}"><div class="result-card-header"><span class="participant-name">${escape(item.username)}</span><span class="result-arrow" aria-hidden="true">↗</span></div><p class="result-code">${t`Result code`} <code>${item.resultCode}</code></p><p class="participant-meta">${t`${escape(dateLabel(item.completedAt))} · ${item.comparisonCount} comparisons`}</p><div class="result-card-winner"><img src="${imageUrl(artwork)}" alt="${t`${escape(winner.name)} character artwork`}" loading="lazy"><div><span class="result-card-label">${t`TOP CHARACTER`}</span><h3>${escape(winner.name)}</h3><span class="result-card-score">${t`${Math.round(winner.elo)} rating`}</span></div></div><ol class="result-top-three">${item.rankings.slice(0, 3).map((row) => `<li><span>${escape(row.name)}</span><span>${Math.round(row.elo)}</span></li>`).join('')}</ol><span class="result-card-link">${t`View ranking & forest plot`} <span aria-hidden="true">→</span></span></a>`;
+  return `<a class="result-card" href="#${encodeURIComponent(item.id)}" aria-label="${t`View ${escape(item.username)} ranking, result code ${item.resultCode}`}"><div class="result-card-header"><span class="participant-name">${escape(item.username)}</span><span class="result-arrow" aria-hidden="true">↗</span></div><p class="result-code">${t`Result code`} <code>${item.resultCode}</code></p><p class="participant-meta">${t`${escape(resultDate(item))} · ${item.comparisonCount} comparisons`}</p>${manualNote(item)}<div class="result-card-winner"><img src="${imageUrl(artwork)}" alt="${t`${escape(winner.name)} character artwork`}" loading="lazy"><div><span class="result-card-label">${t`TOP CHARACTER`}</span><h3>${escape(winner.name)}</h3><span class="result-card-score">${t`${Math.round(winner.elo)} rating`}</span></div></div><ol class="result-top-three">${item.rankings.slice(0, 3).map((row) => `<li><span>${escape(row.name)}</span><span>${Math.round(row.elo)}</span></li>`).join('')}</ol><span class="result-card-link">${t`View ranking & forest plot`} <span aria-hidden="true">→</span></span></a>`;
 }
 function renderGlobalLeaderboard() {
   const target = document.querySelector('#global-leaderboard');
@@ -54,8 +54,8 @@ function renderSelection() {
     else root.innerHTML = `<div class="empty-state"><h3>${t`Ranking not found`}</h3><p>${t`This link does not match an available result.`}</p><a class="text-button" href="#">${t`Browse all results`}</a></div>`;
     return;
   }
-  root.innerHTML = `<a class="text-button all-results-link" href="#">${t`← All results`}</a><div class="detail-header"><div><h2>${t`${escape(item.username)}’s ranking`}</h2><p class="result-code">${t`Result code`} <code>${item.resultCode}</code></p><p>${t`${escape(dateLabel(item.completedAt))} · ${item.comparisonCount} comparisons`}</p></div></div><div id="public-ranking-detail"></div>`;
-  renderRanking(document.querySelector('#public-ranking-detail'), item.rankings, t`${item.username}’s ranking, result code ${item.resultCode}`);
+  root.innerHTML = `<a class="text-button all-results-link" href="#">${t`← All results`}</a><div class="detail-header"><div><h2>${t`${escape(item.username)}’s ranking`}</h2><p class="result-code">${t`Result code`} <code>${item.resultCode}</code></p><p>${t`${escape(resultDate(item))} · ${item.comparisonCount} comparisons`}</p>${manualNote(item)}</div></div><div id="public-ranking-detail"></div>`;
+  renderRanking(document.querySelector('#public-ranking-detail'), item.rankings, t`${item.username}’s ranking, result code ${item.resultCode}`, item);
 }
 function updateView() {
   if (location.hash && location.hash !== '#leaderboard') renderSelection();

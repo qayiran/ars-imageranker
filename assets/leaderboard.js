@@ -15,14 +15,16 @@ export function buildLeaderboard(results) {
   const rankings = IMAGES.map(({ id, name }) => {
     const rows = sessions.map((session) => session.rankings.find((row) => row.id === id));
     const elo = rows.reduce((sum, row) => sum + row.elo, 0) / sessionCount;
-    const wins = rows.reduce((sum, row) => sum + row.wins, 0);
-    const count = rows.reduce((sum, row) => sum + row.count, 0);
+    // Partial screenshot statistics would bias win rates. Use full histories only.
+    const completeRows = sessions.filter((session) => !session.provenance).map((session) => session.rankings.find((row) => row.id === id));
+    const wins = completeRows.reduce((sum, row) => sum + row.wins, 0);
+    const count = completeRows.reduce((sum, row) => sum + row.count, 0);
     return {
-      id, name, elo, wins, count, winRate: 100 * wins / count,
+      id, name, elo, wins, count, winRate: count ? 100 * wins / count : null,
       topVotes: sessions.filter((session) => session.rankings[0].id === id).length,
       minimum: Math.min(...rows.map((row) => row.elo)),
       maximum: Math.max(...rows.map((row) => row.elo)),
     };
   }).sort((a, b) => b.elo - a.elo || a.name.localeCompare(b.name));
-  return { rankings, sessionCount, comparisonCount: sessionCount * TOTAL_PAIRS };
+  return { rankings, sessionCount, comparisonCount: sessionCount * TOTAL_PAIRS, manualCount: sessions.filter((session) => session.provenance).length };
 }

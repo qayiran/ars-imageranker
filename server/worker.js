@@ -115,8 +115,8 @@ export default {
     const origin = request.headers.get('Origin');
     const origins = (env.ALLOWED_ORIGIN || '').split(',').map((value) => value.trim()).filter(Boolean);
     const allowed = origin && origins.includes(origin);
-    const cors = { 'Vary': 'Origin', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', ...(allowed ? { 'Access-Control-Allow-Origin': origin } : {}) };
-    const json = (body, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...cors, 'Content-Type': 'application/json; charset=utf-8' } });
+    const cors = { 'Vary': 'Origin', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', ...(allowed ? { 'Access-Control-Allow-Origin': origin, 'Access-Control-Expose-Headers': 'Retry-After' } : {}) };
+    const json = (body, status = 200, headers = {}) => new Response(JSON.stringify(body), { status, headers: { ...cors, 'Content-Type': 'application/json; charset=utf-8', ...headers } });
     if (origin && !allowed) return json({ error: 'This website is not allowed to use the results service.' }, 403);
     if (request.method === 'OPTIONS') {
       if (!allowed) return json({ error: 'An allowed website origin is required.' }, 403);
@@ -137,7 +137,7 @@ export default {
       // to GitHub, and this application never logs requests or IP addresses.
       if (env.SUBMISSIONS_LIMITER) {
         const { success } = await env.SUBMISSIONS_LIMITER.limit({ key: request.headers.get('CF-Connecting-IP') || 'unknown' });
-        if (!success) return json({ error: 'Too many save attempts. Wait a minute and retry.' }, 429);
+        if (!success) return json({ error: 'Too many save attempts. Wait a minute and retry.' }, 429, { 'Retry-After': '60' });
       }
       let data;
       try { data = validateSubmission(await readBody(request)); } catch (error) {

@@ -38,7 +38,7 @@ try {
     }
     return route.fulfill(failRead ? { status: 503, json: { error: 'The results service is temporarily unavailable. Retry shortly.' } } : { json: fixtures });
   });
-  const page = await context.newPage(); await page.goto(base);
+  const page = await context.newPage(); await page.clock.install(); await page.goto(base);
   await page.getByLabel('Kullanıcı adı veya takma ad').waitFor();
   assert.equal(await page.locator('html').getAttribute('lang'), 'tr');
   assert.equal(await page.locator('[data-language-picker]').inputValue(), 'tr');
@@ -77,6 +77,7 @@ try {
   assert.equal(await page.locator('.winner-artwork img').count(), 1);
   await language(page, 'en'); await page.getByText('Too many save attempts.', { exact: false }).waitFor();
   failSave = false; await page.getByRole('button', { name: 'Save to repository' }).click();
+  await page.clock.fastForward('01:01'); // Respect the native 60-second rate-limit window.
   await page.locator('#save-panel').getByText('Your ranking has been saved to the repository.', { exact: true }).waitFor();
   assert.equal(submissions.length, 2); assert.deepEqual(submissions[0], submissions[1]);
   assert.equal(submissions[0].username, 'İzleyici');

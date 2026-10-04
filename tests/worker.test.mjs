@@ -35,11 +35,13 @@ function mockRepo(t, options = {}) {
 test('save persists a recomputed record and a public index, with no personal metadata', async (t) => {
   const repo = mockRepo(t), data = body();
   data.resultCode = 'client-supplied-code';
+  data.provenance = { kind: 'manual', source: 'screenshot' };
   const response = await worker.fetch(request(data), env); assert.equal(response.status, 201);
   const receipt = await response.json(); assert.equal(receipt.saved, true); assert.equal(receipt.id, data.id);
   const record = repo.files.get(`results/${data.id}.json`).content;
   assert.equal(record.rankings.length, 17); assert.notEqual(record.rankings[0].elo, 99999); assert.equal(record.ip, undefined);
   assert.equal(record.resultCode, data.id.toUpperCase());
+  assert.equal(record.provenance, undefined);
   assert.equal(repo.files.get('results/index.json').content[0].resultCode, record.resultCode);
   assert.equal(repo.files.get('results/index.json').content.length, 1);
   const list = await worker.fetch(new Request('https://results.example/results'), env); assert.equal((await list.json()).length, 1);
@@ -81,5 +83,8 @@ test('invalid or unfinished sessions, oversized payloads and wrong media types a
 });
 test('the native rate limiter returns retryable errors without writing a result', async () => {
   const limited = { ...env, SUBMISSIONS_LIMITER: { limit: async () => ({ success: false }) } };
-  assert.equal((await worker.fetch(request(body()), limited)).status, 429);
+  const response = await worker.fetch(request(body()), limited);
+  assert.equal(response.status, 429);
+  assert.equal(response.headers.get('Retry-After'), '60');
+  assert.equal(response.headers.get('Access-Control-Expose-Headers'), 'Retry-After');
 });

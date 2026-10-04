@@ -1,0 +1,179 @@
+{
+  "method": "Affine least squares calibration: labeled rating versus dot center. Interval ends are cap midpoints measured outside the horizontal stroke; endpoints rounded to the nearest rating point. Accuracy is an approximate digitization tolerance, not a confidence bound.",
+  "pixelsPerRating": 0.3125143145957736,
+  "axisInterceptPixels": 539.8751302557152,
+  "maximumDotResidualPixels": 0.5777321542564096,
+  "endpointAccuracyRatingPoints": 5,
+  "rows": [
+    {
+      "id": "louisiana",
+      "elo": 1711,
+      "name": "Louisiana",
+      "dotPixel": 1074.5,
+      "leftPixel": 984.0,
+      "rightPixel": 1165.0,
+      "lowerEstimate": 1421,
+      "upperEstimate": 2000
+    },
+    {
+      "id": "connecticut",
+      "elo": 1566,
+      "name": "Connecticut",
+      "dotPixel": 1029.0,
+      "leftPixel": 945.2,
+      "rightPixel": 1113.5,
+      "lowerEstimate": 1297,
+      "upperEstimate": 1836
+    },
+    {
+      "id": "south-carolina",
+      "elo": 1379,
+      "name": "South Carolina",
+      "dotPixel": 971.0,
+      "leftPixel": 898.0,
+      "rightPixel": 1043.4285714285713,
+      "lowerEstimate": 1146,
+      "upperEstimate": 1611
+    },
+    {
+      "id": "florida",
+      "elo": 1363,
+      "name": "Florida",
+      "dotPixel": 966.0,
+      "leftPixel": 889.0,
+      "rightPixel": 1042.5,
+      "lowerEstimate": 1117,
+      "upperEstimate": 1608
+    },
+    {
+      "id": "new-jersey",
+      "elo": 1349,
+      "name": "New Jersey",
+      "dotPixel": 962.0,
+      "leftPixel": 887.5,
+      "rightPixel": 1035.4285714285713,
+      "lowerEstimate": 1112,
+      "upperEstimate": 1586
+    },
+    {
+      "id": "rhode-island",
+      "elo": 1206,
+      "name": "Rhode Island",
+      "dotPixel": 917.0,
+      "leftPixel": 846.0,
+      "rightPixel": 987.5,
+      "lowerEstimate": 980,
+      "upperEstimate": 1432
+    },
+    {
+      "id": "virginia",
+      "elo": 1146,
+      "name": "Virginia",
+      "dotPixel": 898.0,
+      "leftPixel": 832.5,
+      "rightPixel": 963.6,
+      "lowerEstimate": 936,
+      "upperEstimate": 1356
+    },
+    {
+      "id": "masachusetts",
+      "elo": 1089,
+      "name": "Massachusetts",
+      "dotPixel": 880.0,
+      "leftPixel": 814.5,
+      "rightPixel": 945.5714285714286,
+      "lowerEstimate": 879,
+      "upperEstimate": 1298
+    },
+    {
+      "id": "georgia",
+      "elo": 1055,
+      "name": "Georgia",
+      "dotPixel": 869.0,
+      "leftPixel": 802.4,
+      "rightPixel": 936.4285714285714,
+      "lowerEstimate": 840,
+      "upperEstimate": 1269
+    },
+    {
+      "id": "new-york",
+      "elo": 913,
+      "name": "New York",
+      "dotPixel": 825.0,
+      "leftPixel": 757.0,
+      "rightPixel": 893.5,
+      "lowerEstimate": 695,
+      "upperEstimate": 1132
+    },
+    {
+      "id": "vermont",
+      "elo": 877,
+      "name": "Vermont",
+      "dotPixel": 814.0,
+      "leftPixel": 745.5,
+      "rightPixel": 882.0,
+      "lowerEstimate": 658,
+      "upperEstimate": 1095
+    },
+    {
+      "id": "maine",
+      "elo": 762,
+      "name": "Maine",
+      "dotPixel": 778.0,
+      "leftPixel": 705.0,
+      "rightPixel": 851.4285714285714,
+      "lowerEstimate": 528,
+      "upperEstimate": 997
+    },
+    {
+      "id": "new-hampshire",
+      "elo": 751,
+      "name": "New Hampshire",
+      "dotPixel": 775.0,
+      "leftPixel": 702.5,
+      "rightPixel": 846.4,
+      "lowerEstimate": 520,
+      "upperEstimate": 981
+    },
+    {
+      "id": "north-carolina",
+      "elo": 740,
+      "name": "North Carolina",
+      "dotPixel": 771.0,
+      "leftPixel": 699.6666666666666,
+      "rightPixel": 842.5,
+      "lowerEstimate": 511,
+      "upperEstimate": 968
+    },
+    {
+      "id": "delaware",
+      "elo": 590,
+      "name": "Delaware",
+      "dotPixel": 724.0,
+      "leftPixel": 645.5,
+      "rightPixel": 803.0,
+      "lowerEstimate": 338,
+      "upperEstimate": 842
+    },
+    {
+      "id": "maryland",
+      "elo": 462,
+      "name": "Maryland",
+      "dotPixel": 684.0,
+      "leftPixel": 596.5,
+      "rightPixel": 772.0,
+      "lowerEstimate": 181,
+      "upperEstimate": 743
+    },
+    {
+      "id": "pennsylvania",
+      "elo": 351,
+      "name": "Pennsylvania",
+      "dotPixel": 650.0,
+      "leftPixel": 557.5,
+      "rightPixel": 741.5,
+      "lowerEstimate": 56,
+      "upperEstimate": 645
+    }
+  ]
+}

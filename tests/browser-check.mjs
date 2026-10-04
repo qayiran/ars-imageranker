@@ -130,7 +130,7 @@ try {
   await mobile.evaluate(({ key, data }) => localStorage.setItem(key, JSON.stringify(data)), { key: storageKey, data: saved });
   await mobile.reload(); await mobile.getByRole('button', { name: 'Continue your session' }).click();
   failSave = true; await vote(mobile);
-  await mobile.getByText('Your result has not been confirmed saved to GitHub.', { exact: false }).waitFor();
+  await mobile.getByText('Saving is pending.', { exact: false }).waitFor();
   assert.equal((await sessionData(mobile)).published, false);
   failSave = false; await mobile.getByRole('button', { name: 'Save to repository' }).click();
   await mobile.locator('#save-panel').getByText('Your ranking has been saved to the repository.').waitFor();
