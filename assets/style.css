@@ -18,3 +18,36 @@
 @media(max-width:720px){.leaderboard-header{align-items:flex-start;flex-direction:column;gap:16px}.leaderboard-header h2{font-size:30px}.leaderboard-overview{grid-template-columns:1fr;gap:13px}.leaderboard-winner{gap:18px;padding:17px}.leaderboard-winner h3{font-size:28px}.leaderboard-winner-score{font-size:24px}.leaderboard-stats{padding:20px 13px;gap:12px}.leaderboard-stats .stat-value{font-size:25px}.leaderboard-scroll-hint{display:block;margin:0 0 10px}.leaderboard-table{min-width:560px;table-layout:fixed;font-size:12px}.leaderboard-table thead th{font-size:10px;padding:12px 9px;line-height:1.6}.leaderboard-table thead th:first-child{width:36px}.leaderboard-table thead th:nth-child(2){width:125px}.leaderboard-table tbody td,.leaderboard-table tbody th{padding:12px 9px}.leaderboard-table tbody td{white-space:nowrap}.leaderboard-table tbody th{font-size:12px;line-height:1.5}.leaderboard-place{width:20px;height:22px;font-size:10px}.leaderboard-method{font-size:11px}.leaderboard-plot .chart-card{padding:17px 12px}.global-leaderboard{margin-bottom:35px}}
 
 .result-code{display:block;font-size:10px!important;line-height:1.7!important;color:var(--muted);margin:10px 0 0}.result-code code{display:block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;color:var(--green);overflow-wrap:anywhere;user-select:text;letter-spacing:.2px}.result-card .participant-meta{margin-top:12px}.detail-header .result-code,.section-header .result-code{margin-top:13px;margin-bottom:12px}.participant .result-code{margin:0}
+/* Language controls and expandable ranking artwork. */
+.language-control{display:flex;align-items:center;gap:8px;font-size:10px;color:var(--muted)}
+.language-control select{color:var(--ink);background:var(--white);border:1px solid var(--line);border-radius:6px;padding:8px 24px 8px 10px;font-size:11px;max-width:115px}
+.header-controls{gap:20px}
+.result-thumbnail,.winner-artwork,.leaderboard-thumbnail{position:relative;display:block;width:100%;padding:0;background:var(--image-background);border:1px solid var(--line);border-radius:7px;overflow:hidden;color:var(--green);cursor:zoom-in}
+.result-thumbnail img,.leaderboard-thumbnail img{display:block;width:100%;height:100%;object-fit:contain;padding:8px;transition:transform .18s ease}
+.result-thumbnail:hover img,.leaderboard-thumbnail:hover img{transform:scale(1.04)}
+.result-thumbnail:hover,.leaderboard-thumbnail:hover{border-color:var(--hover-border)}
+.thumbnail-enlarge{position:absolute;right:5px;bottom:5px;display:grid;place-items:center;width:22px;height:22px;background:var(--white);border-radius:4px;font-size:13px;border:1px solid var(--line);pointer-events:none}
+.winner-artwork{border:0;border-radius:0;background:transparent}
+.winner-artwork .thumbnail-enlarge{right:15px;bottom:10px;width:30px;height:30px;font-size:18px}
+.ranked-artwork{margin:30px 0 12px;background:var(--white);border:1px solid var(--line);border-radius:9px;padding:24px}
+.ranked-artwork-heading{display:flex;justify-content:space-between;align-items:baseline;gap:20px;margin-bottom:20px}
+.ranked-artwork-heading h2{font-size:30px;margin:0}
+.ranked-artwork-heading p{font-size:12px;line-height:1.6;color:var(--muted);margin:0}
+.ranked-artwork-grid{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:22px 16px}
+.ranked-artwork-grid>li{min-width:0}
+.result-thumbnail{aspect-ratio:4/5}
+.ranked-artwork-info{display:flex;align-items:flex-start;gap:9px;padding-top:11px}
+.artwork-rank{font-size:10px;line-height:1.8;font-variant-numeric:tabular-nums;color:var(--muted)}
+.ranked-artwork-info h3{font:16px/1.3 var(--serif);margin:0 0 5px;overflow-wrap:anywhere}
+.ranked-artwork-info p{font-size:10px;margin:0;color:var(--green)}
+.leaderboard-character{display:flex;align-items:center;gap:12px}
+.leaderboard-thumbnail{width:44px;height:56px;flex-shrink:0;border-radius:5px}
+.leaderboard-thumbnail img{padding:3px}
+.leaderboard-thumbnail .thumbnail-enlarge{width:15px;height:15px;right:2px;bottom:2px;font-size:10px}
+.leaderboard-table thead th:nth-child(2){min-width:210px}
+@media(max-width:1100px){.site-header{flex-wrap:wrap;gap:15px}.header-controls{flex:1;justify-content:flex-end}.ranked-artwork-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media(max-width:850px){.site-header .brand{width:100%}.header-controls{justify-content:space-between}.ranked-artwork-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:720px){.header-controls{flex-wrap:wrap;gap:10px 14px}.header-controls .site-nav{flex-basis:100%;justify-content:space-between;gap:12px}.theme-control,.language-control{flex:1}.theme-control>span{display:inline}.theme-control select,.language-control select{padding-top:6px;padding-bottom:6px;max-width:115px}.ranked-artwork{padding:17px 14px;margin-top:22px}.ranked-artwork-heading{display:block}.ranked-artwork-heading h2{font-size:26px;margin-bottom:8px}.ranked-artwork-heading p{font-size:11px}.ranked-artwork-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 10px}.ranked-artwork-info{gap:5px;padding-top:9px}.ranked-artwork-info h3{font-size:14px}.ranked-artwork-info p{font-size:9px}.winner-artwork{grid-column:1;height:170px}.winner-artwork img{width:100%;height:100%}.leaderboard-table{min-width:650px}.leaderboard-table thead th:nth-child(2){width:180px}.leaderboard-character{gap:9px}.leaderboard-thumbnail{width:38px;height:49px}}
+@media(max-width:380px){.ranked-artwork-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.theme-control,.language-control{gap:6px}.theme-control select,.language-control select{padding-left:8px;padding-right:18px}.ranked-artwork-info h3{font-size:16px}}
+@media(max-width:720px){.comparison-header{display:block}.comparison-header .user-chip{display:inline-flex;max-width:100%;width:fit-content;margin-top:14px}.progress-panel{grid-template-columns:1fr;gap:9px}.progress-panel .locked-shuffle{justify-self:start}.progress-panel .progress-track{grid-column:1}.compare-tools{flex-direction:column;gap:13px}.compare-tools .tool-buttons{width:100%;justify-content:space-between;gap:12px}.compare-tools .tool-buttons button{white-space:nowrap}.compare-tools .session-hint{max-width:none;text-align:left}}
+@media(max-width:720px){.progress-panel .locked-shuffle{grid-column:1;grid-row:auto}}

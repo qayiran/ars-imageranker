@@ -34,6 +34,7 @@ globalThis.fetch = async (url, options) => {
 const workerEnv = { GITHUB_TOKEN: 'test-only', GITHUB_OWNER: 'owner', GITHUB_REPO: 'repo', GITHUB_BRANCH: 'main', ALLOWED_ORIGIN: new URL(base).origin };
 let saveAttempts = 0, failSave = false;
 async function setup(context, api = true) {
+  await context.addInitScript(() => { try { localStorage.setItem('ars-language', 'en'); } catch {} });
   context.on('page', (page) => page.on('pageerror', (error) => errors.push(error.message)));
   if (api) await context.route('**/config.json', (route) => route.fulfill({ json: { resultsApiUrl: 'https://results.test' } }));
   await context.route('https://results.test/**', async (route) => {
@@ -140,7 +141,7 @@ try {
   assert.ok(await noOverflow(mobile)); await mobile.screenshot({ path: `${artifacts}/results-mobile.png`, fullPage: true });
   await mobile.getByRole('tab', { name: 'Other rankings' }).click();
   await mobile.getByRole('button', { name: /Quiet observer/ }).click();
-  await mobile.getByText('Quiet observer’s ranking').waitFor();
+  await mobile.getByRole('heading', { name: 'Quiet observer’s ranking' }).waitFor();
   assert.equal(await mobile.locator('.detail-header .result-code code').textContent(), finished.id.toUpperCase());
   assert.equal(await mobile.locator('.plot-value').count(), 17);
   assert.ok(await noOverflow(mobile)); await mobile.screenshot({ path: `${artifacts}/participant-mobile.png`, fullPage: true });

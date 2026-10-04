@@ -22,7 +22,7 @@ async function loadGalleryImages(page) {
   await page.evaluate(() => scrollTo(0, 0));
 }
 try {
-  const context = await browser.newContext({ viewport: { width: 1440, height: 1050 }, colorScheme: 'dark', reducedMotion: 'reduce' });
+  const context = await browser.newContext({ viewport: { width: 1440, height: 1050 }, colorScheme: 'dark', reducedMotion: 'reduce' }); await context.addInitScript(() => { try { localStorage.setItem('ars-language', 'en'); } catch {} });
   context.on('page', (page) => page.on('pageerror', (error) => errors.push(error.message)));
   const page = await context.newPage();
   await page.goto(base);
@@ -72,7 +72,7 @@ try {
   await page.getByRole('button', { name: 'Close' }).click();
   await page.getByLabel('Color theme').selectOption('light');
   await page.screenshot({ path: `${out}/gallery-light-desktop.png`, fullPage: true });
-  await page.getByRole('link', { name: 'Rank', exact: true }).click();
+  await page.getByRole('link', { name: 'Rank characters', exact: true }).click();
   assert.equal(await theme(page), 'light');
   await page.emulateMedia({ colorScheme: 'dark' }); assert.equal(await theme(page), 'light');
   await page.getByLabel('Color theme').selectOption('system'); assert.equal(await theme(page), 'dark');
@@ -82,11 +82,11 @@ try {
   await page.waitForFunction(() => document.querySelector('[data-choice]')?.disabled === false);
   await page.locator('[data-choice="0"]').click();
   await page.getByRole('link', { name: 'Gallery', exact: true }).click();
-  await page.getByRole('link', { name: 'Rank', exact: true }).click();
+  await page.getByRole('link', { name: 'Rank characters', exact: true }).click();
   await page.getByRole('button', { name: 'Continue your session' }).click();
   assert.ok((await page.locator('.progress-label').textContent()).includes('1 of 136'));
   await page.screenshot({ path: `${out}/compare-dark-desktop.png`, fullPage: true });
-  const mobileContext = await browser.newContext({ viewport: { width: 390, height: 844 }, colorScheme: 'dark', reducedMotion: 'reduce' });
+  const mobileContext = await browser.newContext({ viewport: { width: 390, height: 844 }, colorScheme: 'dark', reducedMotion: 'reduce' }); await mobileContext.addInitScript(() => { try { localStorage.setItem('ars-language', 'en'); } catch {} });
   const mobile = await mobileContext.newPage();
   mobile.on('pageerror', (error) => errors.push(error.message));
   await mobile.goto(base); await mobile.getByLabel('Username or nickname').waitFor();
@@ -106,11 +106,11 @@ try {
   await prefix.getByRole('dialog').getByRole('heading', { name: 'Florida' }).waitFor();
   assert.ok((await prefix.locator('.zoom-image').getAttribute('src')).includes('/_site/showcase/'));
   // Gallery content is still viewable when JavaScript is disabled.
-  const plainContext = await browser.newContext({ javaScriptEnabled: false });
+  const plainContext = await browser.newContext({ javaScriptEnabled: false }); await plainContext.addInitScript(() => { try { localStorage.setItem('ars-language', 'en'); } catch {} });
   const plain = await plainContext.newPage(); await plain.goto(`${base}/gallery.html`);
   assert.equal(await plain.locator('.gallery-card').count(), 17);
   // Theme selector works without localStorage access.
-  const blockedContext = await browser.newContext({ colorScheme: 'dark' });
+  const blockedContext = await browser.newContext({ colorScheme: 'dark' }); await blockedContext.addInitScript(() => { try { localStorage.setItem('ars-language', 'en'); } catch {} });
   await blockedContext.addInitScript(() => {
     Storage.prototype.getItem = () => { throw new Error('Storage disabled'); };
     Storage.prototype.setItem = () => { throw new Error('Storage disabled'); };
@@ -118,6 +118,7 @@ try {
   });
   const blocked = await blockedContext.newPage(); blocked.on('pageerror', (error) => errors.push(error.message));
   await blocked.goto(base); assert.equal(await theme(blocked), 'dark');
+  await blocked.locator('[data-language-picker]').selectOption('en');
   await blocked.getByLabel('Color theme').selectOption('light'); assert.equal(await theme(blocked), 'light');
   assert.deepEqual(errors, []);
   console.log(JSON.stringify({ status: 'passed', checked: ['direct copy', 'site name', 'browser theme auto-detection and live changes', 'theme override persistence across pages and reload', 'return to browser preference', '17 gallery characters, 13 founding colonies', 'enlargement', 'previous/next and arrow keys', 'deep links', 'gallery navigation preserves ranking progress', 'phone layouts, light and dark', 'Pages subdirectory gallery', 'no-JavaScript gallery', 'theme with blocked storage'], screenshots: out }, null, 2));

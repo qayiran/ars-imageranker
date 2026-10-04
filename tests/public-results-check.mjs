@@ -13,7 +13,7 @@ const errors = [], requests = [];
 const card = (page, id) => page.locator(`.result-card[href="#${id}"]`);
 async function noOverflow(page) { assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)); }
 try {
-  const context = await browser.newContext({ viewport: { width: 1440, height: 1050 }, colorScheme: 'light', reducedMotion: 'reduce' });
+  const context = await browser.newContext({ viewport: { width: 1440, height: 1050 }, colorScheme: 'light', reducedMotion: 'reduce' }); await context.addInitScript(() => { try { localStorage.setItem('ars-language', 'en'); } catch {} });
   context.on('page', (page) => { page.on('pageerror', (error) => errors.push(error.message)); page.on('request', (request) => requests.push(request.url())); });
   const page = await context.newPage();
   await page.goto(base);
@@ -30,7 +30,7 @@ try {
   assert.equal((await page.request.get(`${base}/_site/results/examples.json`)).status(), 404);
   assert.equal((await page.request.get(`${base}/_site/tests/fixtures/participant-results.json`)).status(), 404);
   assert.ok(requests.every((url) => !url.includes('examples.json')));
-  const liveContext = await browser.newContext({ viewport: { width: 1440, height: 1050 }, colorScheme: 'light', reducedMotion: 'reduce' });
+  const liveContext = await browser.newContext({ viewport: { width: 1440, height: 1050 }, colorScheme: 'light', reducedMotion: 'reduce' }); await liveContext.addInitScript(() => { try { localStorage.setItem('ars-language', 'en'); } catch {} });
   await liveContext.route('**/config.json', (route) => route.fulfill({ json: { resultsApiUrl: 'https://results.test' } }));
   let unavailable = false;
   await liveContext.route('https://results.test/results', (route) => route.fulfill(unavailable ? { status: 503, json: { error: 'Service unavailable for this test.' } } : { json: participants }));

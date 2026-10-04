@@ -4,6 +4,10 @@ A static GitHub Pages adaptation of [Quentin Wach’s Image Ranker](https://gith
 
 Visitors choose a pseudonym and compare all 136 unique image pairs. Auto-shuffle is always enabled after every three votes. There is no upload, folder selector, exclusion, or manual smart-shuffle control. Users can enlarge images, undo, defer a pair, pause, resume, download results, and explore other participants’ rankings and forest plots after finishing.
 
+Turkish is the default language. Visitors can select English using the header language control; the choice stays in this browser across pages. Language changes preserve comparison progress, typed nicknames, result filters and the selected participant. Labels, chart explanations, historical categories, status messages, dates and accessible image labels follow the chosen language; saved results and character identifiers remain unchanged.
+
+Each individual ranking keeps its large first-place image and adds an ordered gallery of all 17 characters. Images open in the shared viewer, where previous/next buttons and arrow keys follow rank order. The global leaderboard also includes an expandable thumbnail in each character row.
+
 ## Preview locally
 
 Node.js 22+ and Python 3 are sufficient. There are no frontend packages to install.

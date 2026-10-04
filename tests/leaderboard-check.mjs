@@ -21,10 +21,10 @@ async function verifyTable(page, board) {
 }
 async function noOverflow(page) { assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)); }
 try {
-  const emptyContext = await browser.newContext(); const empty = await emptyContext.newPage();
+  const emptyContext = await browser.newContext(); await emptyContext.addInitScript(() => { try { localStorage.setItem('ars-language', 'en'); } catch {} }); const empty = await emptyContext.newPage();
   await empty.goto(`${base}/results.html#leaderboard`); await empty.getByRole('heading', { name: 'No participant scores yet' }).waitFor();
   assert.equal(await empty.locator('.leaderboard-table').count(), 0); assert.equal(await empty.locator('select#leaderboard-source').count(), 0);
-  const context = await browser.newContext({ locale: 'en-US', viewport: { width: 1440, height: 1050 }, colorScheme: 'dark', reducedMotion: 'reduce' });
+  const context = await browser.newContext({ locale: 'en-US', viewport: { width: 1440, height: 1050 }, colorScheme: 'dark', reducedMotion: 'reduce' }); await context.addInitScript(() => { try { localStorage.setItem('ars-language', 'en'); } catch {} });
   await context.route('**/config.json', (route) => route.fulfill({ json: { resultsApiUrl: 'https://results.test' } }));
   let count = 2, unavailable = false;
   await context.route('https://results.test/results', (route) => route.fulfill(unavailable ? { status: 503, json: { error: 'Service unavailable for this test.' } } : { json: [...participants.slice(0, count), { ...participants[0], example: true }, participants[0]] }));
