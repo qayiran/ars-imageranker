@@ -27,6 +27,8 @@ npm run build
 python3 -m http.server 8000 --bind 127.0.0.1 --directory _site
 ```
 
+The build gives every JavaScript module, stylesheet and favicon a content-based filename and rewrites the complete module import graph. When a dependency changes, its importing modules receive new filenames too. This prevents cached files from an earlier deployment from breaking language controls or mixing old styles with new results markup. The generated `asset-manifest.json` identifies the deployed version. Preview `_site` as above to inspect the exact artifact GitHub Pages publishes.
+
 ## Connect saving before publishing
 
 GitHub Pages serves static files; it cannot run Flask or hold a private GitHub credential. The included Cloudflare Worker receives completed sessions and commits them to your repository. Visitors need only a nickname; they never need GitHub or Cloudflare accounts. You, the site owner, need a Cloudflare account once to set up the service.
