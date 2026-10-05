@@ -1,5 +1,13 @@
 # Implementation plan and verification
 
+## Faction and regional preference summaries
+
+The shared individual-ranking renderer adds two panels below the character forest plot: Patriots versus Loyalists, and three regional averages. `assets/group-preferences.js` computes each group as the sum of member ratings divided by its size, using unrounded ratings from complete valid catalogs. This avoids rewarding the larger faction or region for having more characters. Massachusetts and New York retain equal character weight despite their leader labels. Louisiana and Vermont contribute only to geographic regions. New England includes Connecticut, Maine, Massachusetts, New Hampshire, Rhode Island and Vermont; Middle includes Delaware, New Jersey, New York and Pennsylvania; Southern includes Florida, Georgia, Louisiana, Maryland, North Carolina, South Carolina and Virginia.
+
+`assets/group-preferences-view.js` renders translated means, the faction score gap, each region's gap below the highest region, and a shared rating scale. A details panel explains membership, calculation and the interpretation as character-design preferences. The summaries do not infer win rates, percentage preference or statistical significance from mean differences. Manual records use their recovered rounded ratings, with a precision note; comparison history and missing win counts are not required. The same view is used for personal results and both participant-browsing paths. Group definitions and labels stay out of saved records and require no Worker or result migration.
+
+`tests/group-preferences.test.mjs` checks equal weighting, neutral exclusions, leader weighting, all region memberships, fractional scores, true ties, invalid catalogs and the actual recovered record. `tests/group-preferences-check.mjs` checks rendered means, membership explanations, Turkish/English, personal/community/public rendering, generated asset imports and light/dark layouts down to 320 px using mocked network requests.
+
 ## 1. Establish a Pages-compatible foundation
 
 Create a static root entry point and relative asset URLs. Keep the upstream Flask app intact. Use an explicit catalog of the 17 supplied PNGs; preserve their filenames (including `Masachusetts_Showcase.png`) while correcting the visible label to Massachusetts. Port the upstream TrueSkill and queue-priority logic into a dependency-free module shared by browser and Worker.

@@ -8,6 +8,8 @@ Turkish is the default language. Visitors can select English using the header la
 
 Each individual ranking keeps its large first-place image and adds an ordered gallery of all 17 characters. Images open in the shared viewer, where previous/next buttons and arrow keys follow rank order. The global leaderboard also includes an expandable thumbnail in each character row.
 
+Individual results also compare **Patriots vs Loyalists** and **New England, Middle and Southern colonies** using the mean character rating in each group. Dividing by group size gives the 11 Patriots and 4 Loyalists equal footing; leaders receive no extra weight. Louisiana and Vermont are excluded from faction scores. Regional statistics include all 17 characters geographically: Maine and Vermont in New England, Florida and Louisiana in the South, and Maryland in the Southern group. The expandable group list shows every assignment. Factions use the site owner's character assignments, and these scores describe artwork preferences. They are rating averages, not percentages or historical political claims. Recovered screenshot scores can contribute without missing win counts; their rounded precision is identified.
+
 ## Preview locally
 
 Node.js 22+ and Python 3 are sufficient. There are no frontend packages to install.
