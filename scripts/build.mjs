@@ -17,7 +17,7 @@ for (const file of await readdir(new URL('../assets/', import.meta.url), { withF
 const assets = fingerprintAssets(sources);
 for (const { filename, content } of assets.values()) await writeFile(new URL(`assets/${filename}`, out), content);
 const revision = createHash('sha256');
-for (const page of ['index.html', 'gallery.html', 'results.html']) {
+for (const page of ['index.html', 'gallery.html', 'results.html', 'character.html']) {
   const html = rewritePageAssets(await readFile(new URL(`../${page}`, import.meta.url), 'utf8'), assets);
   revision.update(html);
   await writeFile(new URL(page, out), html);

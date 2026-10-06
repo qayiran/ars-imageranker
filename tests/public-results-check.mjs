@@ -14,6 +14,8 @@ const card = (page, id) => page.locator(`.result-card[href="#${id}"]`);
 async function noOverflow(page) { assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)); }
 try {
   const context = await browser.newContext({ viewport: { width: 1440, height: 1050 }, colorScheme: 'light', reducedMotion: 'reduce' }); await context.addInitScript(() => { try { localStorage.setItem('ars-language', 'en'); } catch {} });
+  await context.route('**/config.json', (route) => route.fulfill({ json: { resultsApiUrl: '' } }));
+  await context.route('**/results/index.json', (route) => route.fulfill({ json: [] }));
   context.on('page', (page) => { page.on('pageerror', (error) => errors.push(error.message)); page.on('request', (request) => requests.push(request.url())); });
   const page = await context.newPage();
   await page.goto(base);

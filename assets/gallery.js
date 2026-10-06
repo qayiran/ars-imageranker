@@ -1,6 +1,16 @@
 import { IMAGES } from './catalog.js';
 import { characterCategory } from './character-details.js';
 import { openCharacter } from './viewer.js';
+import { t } from './language.js';
+document.querySelectorAll('.gallery-card').forEach((card) => {
+  const id = card.querySelector('[data-character]').dataset.character;
+  const profile = document.createElement('a'); profile.className = 'gallery-profile-link';
+  profile.href = `character.html#${id}`; profile.textContent = t('View character statistics →');
+  card.append(profile);
+});
+window.addEventListener('languagechange', () => {
+  document.querySelectorAll('.gallery-profile-link').forEach((link) => { link.textContent = t('View character statistics →'); });
+});
 let viewer = null;
 function openFromHash() {
   const id = location.hash.slice(1);

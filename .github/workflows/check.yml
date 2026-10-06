@@ -1,7 +1,7 @@
 name: Verify showcase site
 on:
   push:
-    paths: ['assets/**', 'server/**', 'scripts/**', 'tests/**', 'showcase/**', 'index.html', 'gallery.html', 'results.html', 'config.json', 'package.json', '.github/workflows/check.yml']
+    paths: ['assets/**', 'server/**', 'scripts/**', 'tests/**', 'showcase/**', 'index.html', 'gallery.html', 'results.html', 'character.html', 'config.json', 'package.json', '.github/workflows/check.yml']
   pull_request:
   workflow_dispatch:
 permissions:

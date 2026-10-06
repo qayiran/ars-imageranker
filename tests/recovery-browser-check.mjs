@@ -99,14 +99,14 @@ try {
     await preview.locator('[data-language-picker]').selectOption('en');
     assert.equal(await preview.locator('.manual-note').textContent(), 'Manually added');
     assert.ok((await preview.locator('.chart-legend').textContent()).includes('estimated 95% interval'));
-    await preview.locator('[data-result-image]').last().click();
+    await preview.locator('.ranked-artwork-grid [data-result-image]').last().click();
     assert.ok((await preview.getByRole('dialog').textContent()).includes('Pennsylvania'));
     await preview.keyboard.press('Escape');
     await preview.locator('[data-language-picker]').selectOption('tr');
   }
   await preview.setViewportSize({ width: 390, height: 844 });
   await preview.emulateMedia({ colorScheme: 'dark' });
-  await preview.reload(); await preview.locator('#public-ranking-detail svg').waitFor();
+  await preview.reload(); await preview.locator('#public-ranking-detail .plot-scroll svg').waitFor();
   assert.ok(await preview.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   await preview.screenshot({ path: `${artifacts}/nisacx-turkish-dark-phone.png`, fullPage: true });
   await preview.goto(`${base}/results.html`);

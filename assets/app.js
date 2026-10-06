@@ -2,6 +2,9 @@ import { t, translateError } from './language.js';
 import { IMAGES, TOTAL_PAIRS, CATALOG_VERSION, imageUrl } from './catalog.js';
 import { MODEL, createQueue, autoShuffle, rankingsFrom, normalizeUsername, validateHistory, validateSubmission, pairKey, summaryFrom } from './ranking.js';
 import { renderRanking } from './results-view.js';
+import { renderDivergence } from './rank-divergence-view.js';
+import { renderPersonalInsights } from './personal-insights-view.js';
+import { renderDarkHorseFavorites } from './taste-insights-view.js';
 import { openCharacter } from './viewer.js';
 import { resultCode } from './result-identity.js';
 import { manualNote, resultDate } from './result-meta.js';
@@ -15,6 +18,7 @@ let config = { resultsApiUrl: '' };
 let session = null, view = 'welcome', tab = 'personal', busy = false, ready = false, renderId = 0;
 let saveMessage = '', saveTone = '', saving = false, configError = '', storageWarning = '';
 let community = [], communityError = '', communityLoaded = false, communitySelection = null;
+let communityLoad = null;
 let comparisonNote = '';
 const outbox = createSaveQueue({
   storage: { getItem: (key) => localStorage.getItem(key), setItem: (key, value) => localStorage.setItem(key, value) },
@@ -185,18 +189,46 @@ function renderResults() {
   const tabs = app.querySelector('[role="tablist"]');
   tabs.addEventListener('keydown', (event) => { if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) { event.preventDefault(); tab = event.key === 'Home' ? 'personal' : event.key === 'End' ? 'community' : tab === 'personal' ? 'community' : 'personal'; renderResults(); document.querySelector(`#${tab}-tab`).focus(); } });
   updatePendingSaves();
-  if (tab === 'personal') renderRanking(document.querySelector('#results-content'), ratings, t('Your ranking'));
+  if (tab === 'personal') {
+    const target = document.querySelector('#results-content');
+    renderRanking(target, ratings, t('Your ranking'), { id: session.id, username: session.username, history: session.history, participants: community,
+      comparisonStatus: communityLoaded ? 'ready' : communityError ? 'error' : 'loading' });
+    void renderPersonalComparison(target.querySelector('.ranking-divergence-slot'), ratings, renderId);
+  }
   else void renderCommunity();
 }
 
+async function renderPersonalComparison(target, ratings, revision, refresh = false) {
+  const insights = target.parentElement.querySelector('.personal-insights-slot');
+  const darkHorse = target.parentElement.querySelector('.dark-horse-slot');
+  if (refresh || (!communityLoaded && !communityError)) {
+    renderDivergence(target, ratings, { comparisonStatus: 'loading' });
+    renderPersonalInsights(insights, ratings, { id: session.id, history: session.history, comparisonStatus: 'loading' });
+    renderDarkHorseFavorites(darkHorse, ratings, { id: session.id, history: session.history, comparisonStatus: 'loading' });
+    await loadCommunity();
+  }
+  if (!target.isConnected || revision !== renderId || view !== 'results' || tab !== 'personal') return;
+  renderDivergence(target, ratings, { id: session.id, participants: community,
+    comparisonStatus: communityLoaded ? 'ready' : 'error',
+    onRetry: () => void renderPersonalComparison(target, ratings, revision, true) });
+  renderPersonalInsights(insights, ratings, { id: session.id, history: session.history, participants: community,
+    comparisonStatus: communityLoaded ? 'ready' : 'error' });
+  renderDarkHorseFavorites(darkHorse, ratings, { id: session.id, history: session.history, participants: community,
+    comparisonStatus: communityLoaded ? 'ready' : 'error' });
+}
+
 async function loadCommunity() {
-  communityError = '';
-  try {
-    const payload = await requestJson(config.resultsApiUrl ? apiPath('/results') : new URL('../results/index.json', import.meta.url).href, { cache: 'no-store' });
-    if (!Array.isArray(payload)) throw new Error('The shared results index is invalid.');
-    community = normalizeResults(payload);
-    communityLoaded = true;
-  } catch (error) { communityError = error.message; communityLoaded = false; }
+  if (communityLoad) return communityLoad;
+  communityLoad = (async () => {
+    communityError = '';
+    try {
+      const payload = await requestJson(config.resultsApiUrl ? apiPath('/results') : new URL('../results/index.json', import.meta.url).href, { cache: 'no-store' });
+      if (!Array.isArray(payload)) throw new Error('The shared results index is invalid.');
+      community = normalizeResults(payload);
+      communityLoaded = true;
+    } catch (error) { communityError = error.message; communityLoaded = false; }
+  })();
+  try { await communityLoad; } finally { communityLoad = null; }
 }
 async function renderCommunity(refresh = false) {
   const version = renderId;
@@ -218,7 +250,7 @@ async function renderCommunity(refresh = false) {
 function renderCommunitySelection() {
   const item = communitySelection, target = document.querySelector('#results-content');
   target.innerHTML = `<div class="detail-header"><div><h2>${t`${escape(item.username)}’s ranking`}</h2><p class="result-code">${t`Result code`} <code>${resultCode(item.id)}</code></p><p>${t`${resultDate(item)} · ${TOTAL_PAIRS} comparisons`}</p>${manualNote(item)}</div><button class="secondary" id="back-to-list">${t`← All results`}</button></div><div id="participant-ranking"></div>`;
-  renderRanking(document.querySelector('#participant-ranking'), item.rankings, t`${item.username}’s ranking`, item);
+  renderRanking(document.querySelector('#participant-ranking'), item.rankings, t`${item.username}’s ranking`, { ...item, participants: community });
   document.querySelector('#back-to-list').addEventListener('click', () => { communitySelection = null; void renderCommunity(); });
 }
 

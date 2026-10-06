@@ -1,0 +1,16 @@
+import { t, locale } from './language.js';
+import { communityInsights } from './community-insights.js';
+import { groupPreferencesMarkup } from './group-preferences-view.js';
+import { thumbnail, bindResultImages } from './result-images.js';
+const number = (value) => value.toLocaleString(locale(), { maximumFractionDigits: 1 });
+const escape = (value) => String(value).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+export function renderCommunityInsights(target, results) {
+  const data = communityInsights(results);
+  if (!data.sessionCount) { target.innerHTML = ''; return; }
+  const row = (item, image = false) => `<tr data-divisive-character="${item.id}" data-rank-spread="${item.spread}"><th scope="row">${image ? `<div class="divisive-character">${thumbnail(item.id, item.name, { className: 'insight-thumbnail' })}<a href="character.html#${item.id}">${escape(item.name)}</a></div>` : escape(item.name)}</th><td>${number(item.spread)}</td><td>${number(item.bestRank)}–${number(item.worstRank)}</td><td>${number(item.meanRank)}</td></tr>`;
+  const header = `<thead><tr><th scope="col">${t('Colony / state')}</th><th scope="col">${t('Rank spread')}</th><th scope="col">${t('Best–worst rank')}</th><th scope="col">${t('Average rank')}</th></tr></thead>`;
+  const divisive = data.sessionCount < 2 ? `<p class="insight-empty">${t('At least two saved rankings are needed to measure disagreement between participants.')}</p>` : `<div class="insight-table-scroll" tabindex="0" role="region" aria-label="${t('Most divisive characters table')}"><table class="divisive-table"><caption class="sr-only">${t('Most divisive characters table')}</caption>${header}<tbody>${data.characters.slice(0, 5).map((item) => row(item, true)).join('')}</tbody></table></div><details class="insight-details"><summary>${t('View all 17 characters')}</summary><div class="insight-table-scroll"><table class="divisive-table">${header}<tbody>${data.characters.map((item) => row(item)).join('')}</tbody></table></div></details>`;
+  target.innerHTML = `<section class="most-divisive insight-panel" aria-label="${t('Most divisive characters')}"><div class="community-insight-heading"><div><span class="eyebrow">${t('BETWEEN PARTICIPANTS')}</span><h2>${t('Most divisive characters')}</h2><p class="insight-intro">${t('Characters with the largest differences in rank between saved results.')}</p></div><span class="insight-sample">${t`${data.sessionCount} saved rankings`}</span></div>${divisive}<p class="fine-print insight-note">${t('Rank spread is the population standard deviation of each character’s position across saved rankings. Higher means more disagreement; zero means everyone places it at the same rank. The range is the best to worst observed rank, not a confidence interval. Tied characters share their average rank.')}</p>${data.manualCount ? `<p class="fine-print insight-note">${t('Recovered screenshot ratings are included; rounding can affect nearly tied characters.')}</p>` : ''}</section>${groupPreferencesMarkup(data.board.rankings, { community: true, sessionCount: data.sessionCount, manualCount: data.manualCount })}`;
+  if (data.sessionCount > 1) bindResultImages(target.querySelector('.most-divisive'), data.board.rankings);
+}

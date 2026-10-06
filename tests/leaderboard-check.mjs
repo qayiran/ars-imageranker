@@ -21,7 +21,10 @@ async function verifyTable(page, board) {
 }
 async function noOverflow(page) { assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)); }
 try {
-  const emptyContext = await browser.newContext(); await emptyContext.addInitScript(() => { try { localStorage.setItem('ars-language', 'en'); } catch {} }); const empty = await emptyContext.newPage();
+  const emptyContext = await browser.newContext(); await emptyContext.addInitScript(() => { try { localStorage.setItem('ars-language', 'en'); } catch {} });
+  await emptyContext.route('**/config.json', (route) => route.fulfill({ json: { resultsApiUrl: '' } }));
+  await emptyContext.route('**/results/index.json', (route) => route.fulfill({ json: [] }));
+  const empty = await emptyContext.newPage();
   await empty.goto(`${base}/results.html#leaderboard`); await empty.getByRole('heading', { name: 'No participant scores yet' }).waitFor();
   assert.equal(await empty.locator('.leaderboard-table').count(), 0); assert.equal(await empty.locator('select#leaderboard-source').count(), 0);
   const context = await browser.newContext({ locale: 'en-US', viewport: { width: 1440, height: 1050 }, colorScheme: 'dark', reducedMotion: 'reduce' }); await context.addInitScript(() => { try { localStorage.setItem('ars-language', 'en'); } catch {} });
@@ -60,10 +63,10 @@ try {
   await page.locator('.leaderboard-table').waitFor(); await verifyTable(page, buildLeaderboard(participants));
   await page.locator(`.result-card[href="#${participants[0].id}"]`).click();
   await page.getByRole('heading', { name: 'Same nickname’s ranking' }).waitFor();
-  assert.ok((await page.locator('svg desc').textContent()).includes('posterior intervals'));
+  assert.ok((await page.locator('.plot-scroll svg desc').textContent()).includes('posterior intervals'));
   await page.goto(`${base}/_site/results.html#leaderboard`); await page.locator('.leaderboard-table').waitFor();
   assert.ok((await page.locator('.leaderboard-winner img').getAttribute('src')).includes('/_site/showcase/'));
-  await page.locator('.leaderboard-table tbody th a').first().click(); await page.locator('dialog[open]').waitFor();
+  await page.locator('.leaderboard-table [data-result-image]').first().click(); await page.locator('dialog[open]').waitFor();
   assert.deepEqual(errors, []);
   console.log(JSON.stringify({ status: 'passed', checked: ['17 combined ratings and win statistics', 'same-name sessions counted separately and duplicate IDs excluded', 'empty state without preview data', 'search-independent totals and expanded chart', 'refresh, outage and retry', 'global range/personal posterior plots', 'light/dark layouts down to 320px', 'Pages subpath gallery links'], screenshots: out }, null, 2));
 } finally { await browser.close(); }
