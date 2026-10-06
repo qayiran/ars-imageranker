@@ -1,5 +1,203 @@
 [
   {
+    "id": "2cde0030-c4e7-4c0b-92b2-d239f43c8796",
+    "resultCode": "2CDE0030-C4E7-4C0B-92B2-D239F43C8796",
+    "username": "Toruga",
+    "completedAt": "2026-10-06T10:08:55.569Z",
+    "model": "trueskill-1v1-v1",
+    "catalogVersion": "showcase-2026-10-v1",
+    "comparisonCount": 136,
+    "rankings": [
+      {
+        "id": "south-carolina",
+        "name": "South Carolina",
+        "mu": 11.730136847859818,
+        "sigma": 2.746803827047928,
+        "wins": 14,
+        "losses": 2,
+        "count": 16,
+        "elo": 1469.2054739143928,
+        "uncertainty": 109.8721530819171
+      },
+      {
+        "id": "rhode-island",
+        "name": "Rhode Island",
+        "mu": 7.844210561311928,
+        "sigma": 2.7281732489363226,
+        "wins": 13,
+        "losses": 3,
+        "count": 16,
+        "elo": 1313.7684224524771,
+        "uncertainty": 109.1269299574529
+      },
+      {
+        "id": "florida",
+        "name": "Florida",
+        "mu": 5.403379897677347,
+        "sigma": 2.6809699169861703,
+        "wins": 11,
+        "losses": 5,
+        "count": 16,
+        "elo": 1216.135195907094,
+        "uncertainty": 107.2387966794468
+      },
+      {
+        "id": "vermont",
+        "name": "Vermont",
+        "mu": 4.692049875080783,
+        "sigma": 2.391402454072405,
+        "wins": 11,
+        "losses": 5,
+        "count": 16,
+        "elo": 1187.6819950032313,
+        "uncertainty": 95.6560981628962
+      },
+      {
+        "id": "new-jersey",
+        "name": "New Jersey",
+        "mu": 4.436051056557965,
+        "sigma": 2.681099297372093,
+        "wins": 11,
+        "losses": 5,
+        "count": 16,
+        "elo": 1177.4420422623186,
+        "uncertainty": 107.24397189488371
+      },
+      {
+        "id": "louisiana",
+        "name": "Louisiana",
+        "mu": 4.400840621678107,
+        "sigma": 2.4147092310501734,
+        "wins": 10,
+        "losses": 6,
+        "count": 16,
+        "elo": 1176.0336248671242,
+        "uncertainty": 96.58836924200693
+      },
+      {
+        "id": "connecticut",
+        "name": "Connecticut",
+        "mu": 2.586599208783894,
+        "sigma": 2.460535259601832,
+        "wins": 10,
+        "losses": 6,
+        "count": 16,
+        "elo": 1103.4639683513558,
+        "uncertainty": 98.42141038407328
+      },
+      {
+        "id": "new-york",
+        "name": "New York",
+        "mu": 2.417159466595585,
+        "sigma": 2.5952677792052876,
+        "wins": 10,
+        "losses": 6,
+        "count": 16,
+        "elo": 1096.6863786638235,
+        "uncertainty": 103.8107111682115
+      },
+      {
+        "id": "north-carolina",
+        "name": "North Carolina",
+        "mu": 1.875553061235353,
+        "sigma": 2.59360307073872,
+        "wins": 9,
+        "losses": 7,
+        "count": 16,
+        "elo": 1075.0221224494142,
+        "uncertainty": 103.7441228295488
+      },
+      {
+        "id": "maine",
+        "name": "Maine",
+        "mu": 1.0925918968108537,
+        "sigma": 2.450697002521522,
+        "wins": 9,
+        "losses": 7,
+        "count": 16,
+        "elo": 1043.7036758724341,
+        "uncertainty": 98.02788010086088
+      },
+      {
+        "id": "pennsylvania",
+        "name": "Pennsylvania",
+        "mu": 0.9800891534008807,
+        "sigma": 2.3544904534633333,
+        "wins": 9,
+        "losses": 7,
+        "count": 16,
+        "elo": 1039.2035661360353,
+        "uncertainty": 94.17961813853333
+      },
+      {
+        "id": "masachusetts",
+        "name": "Massachusetts",
+        "mu": 0.695120394252158,
+        "sigma": 2.2724314099764515,
+        "wins": 8,
+        "losses": 8,
+        "count": 16,
+        "elo": 1027.8048157700864,
+        "uncertainty": 90.89725639905807
+      },
+      {
+        "id": "virginia",
+        "name": "Virginia",
+        "mu": -7.539159284118718,
+        "sigma": 2.745970803905763,
+        "wins": 4,
+        "losses": 12,
+        "count": 16,
+        "elo": 698.4336286352514,
+        "uncertainty": 109.83883215623052
+      },
+      {
+        "id": "maryland",
+        "name": "Maryland",
+        "mu": -8.145037603741054,
+        "sigma": 2.8923085794803627,
+        "wins": 3,
+        "losses": 13,
+        "count": 16,
+        "elo": 674.1984958503579,
+        "uncertainty": 115.6923431792145
+      },
+      {
+        "id": "georgia",
+        "name": "Georgia",
+        "mu": -9.974783535253746,
+        "sigma": 3.0205506131565922,
+        "wins": 3,
+        "losses": 13,
+        "count": 16,
+        "elo": 601.0086585898501,
+        "uncertainty": 120.82202452626369
+      },
+      {
+        "id": "delaware",
+        "name": "Delaware",
+        "mu": -13.796993383878165,
+        "sigma": 3.4506482253104793,
+        "wins": 1,
+        "losses": 15,
+        "count": 16,
+        "elo": 448.1202646448734,
+        "uncertainty": 138.02592901241917
+      },
+      {
+        "id": "new-hampshire",
+        "name": "New Hampshire",
+        "mu": -17.34430324597683,
+        "sigma": 3.8400077073034513,
+        "wins": 0,
+        "losses": 16,
+        "count": 16,
+        "elo": 306.22787016092684,
+        "uncertainty": 153.60030829213804
+      }
+    ]
+  },
+  {
     "id": "59120645-abe4-445d-a336-3f80c456d641",
     "resultCode": "59120645-ABE4-445D-A336-3F80C456D641",
     "username": "Ventinin  taşaklari",
