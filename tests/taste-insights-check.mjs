@@ -18,10 +18,12 @@ async function context() {
  const c=await browser.newContext({viewport:{width:1440,height:1100},reducedMotion:'reduce'});
  c.on('page',p=>p.on('pageerror',e=>errors.push(e.message)));
  await c.route('**/config.json',r=>r.fulfill({json:{resultsApiUrl:'https://taste.test'}}));
- await c.route('https://taste.test/**',r=>{
+ await c.route('https://taste.test/**',async r=>{
   const req=r.request(),headers={'Access-Control-Allow-Origin':new URL(base).origin};
   if(req.method()==='OPTIONS')return r.fulfill({status:204,headers:{...headers,'Access-Control-Allow-Methods':'GET, POST','Access-Control-Allow-Headers':'Content-Type'}});
   if(req.method()==='POST'){writes.push(req.postDataJSON().id);return r.fulfill({json:{saved:true,id:req.postDataJSON().id},headers});}
+  const id = new URL(req.url()).pathname.split('/')[2];
+  if(id) return r.fulfill({json:JSON.parse(await readFile(new URL(`../results/${id}.json`,import.meta.url))),headers});
   return r.fulfill({status:mode==='error'?503:200,json:mode==='error'?{error:'Unavailable'}:mode==='solo'?[own]:records,headers});
  });
  return c;
@@ -96,15 +98,15 @@ try{
  await page.locator('[data-cycle-ids]').waitFor(); await assertFingerprint(own.rankings);
  // Network/invalid histories do not fabricate examples; retry succeeds.
  const retry=await context(), p=await retry.newPage(); let historyMode='failure';
- await retry.route(`**/results/${own.id}.json`,r=>r.fulfill({status:historyMode==='failure'?503:200,json:historyMode==='invalid'?{...record,comparisons:record.comparisons.slice(1)}:historyMode==='failure'?{error:'Unavailable'}:record}));
+ await retry.route(`https://taste.test/results/${own.id}`,r=>r.fulfill({status:historyMode==='failure'?503:200,headers:{'Access-Control-Allow-Origin':new URL(base).origin},json:historyMode==='invalid'?{...record,comparisons:record.comparisons.slice(1)}:historyMode==='failure'?{error:'Unavailable'}:record}));
  await p.goto(`${base}/_site/results.html#${own.id}`); await p.locator('[data-consistency-page=examples]').click();
- await p.getByText('Kayıtlı seçimler yüklenemedi. Yeni kaydedilen bir sonuç, sonraki site güncellemesinden sonra erişilebilir olabilir. Daha sonra yeniden deneyin.',{exact:true}).waitFor();
+ await p.getByText('Kayıtlı seçimler yüklenemedi. Bağlantınızı kontrol edip yeniden deneyin.',{exact:true}).waitFor();
  assert.equal(await p.locator('[data-cycle-ids]').count(),0);
  historyMode='invalid'; await p.locator('[data-retry-cycles]').click(); await p.locator('[data-retry-cycles]').waitFor(); assert.equal(await p.locator('[data-cycle-ids]').count(),0);
  historyMode='ready'; await p.locator('[data-retry-cycles]').click(); await p.locator('[data-cycle-ids]').waitFor(); await retry.close();
  // A delayed history load survives a language change through the cached validated result.
  const delayed=await context(), d=await delayed.newPage(); let release;
- await delayed.route(`**/results/${own.id}.json`,async r=>{await new Promise(resolve=>release=resolve);await r.fulfill({json:record});});
+ await delayed.route(`https://taste.test/results/${own.id}`,async r=>{await new Promise(resolve=>release=resolve);await r.fulfill({json:record,headers:{'Access-Control-Allow-Origin':new URL(base).origin}});});
  await d.goto(`${base}/results.html#${own.id}`); await d.locator('[data-consistency-page=examples]').click(); await d.locator('[data-language-picker]').selectOption('en');
  release(); await d.locator('[data-cycle-ids]').waitFor(); await delayed.close();
  // Empty references keep the fingerprint and history usable; service errors do the same.

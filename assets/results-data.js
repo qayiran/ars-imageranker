@@ -44,16 +44,23 @@ export async function fetchJson(url) {
   if (!response.ok) throw new Error(typeof body?.error === 'string' ? body.error : `Results are unavailable (${response.status}).`);
   return body;
 }
-export async function loadPublicResults() {
+async function resultsEndpoint(livePath, localPath) {
   const config = await fetchJson(new URL('../config.json', import.meta.url));
-  let endpoint = new URL('../results/index.json', import.meta.url);
   if (config.resultsApiUrl) {
     const base = new URL(config.resultsApiUrl);
     if (base.protocol !== 'https:' && !(base.protocol === 'http:' && ['localhost', '127.0.0.1'].includes(base.hostname))) throw new Error('The results service must use HTTPS.');
     if (base.username || base.password || base.search || base.hash) throw new Error('The results service URL is invalid.');
-    endpoint = `${base.href.replace(/\/$/, '')}/results`;
+    return `${base.href.replace(/\/$/, '')}/${livePath}`;
   }
-  const data = await fetchJson(endpoint);
+  return new URL(`../${localPath}`, import.meta.url);
+}
+export async function loadResultRecord(id) {
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)) throw new Error('Invalid result code');
+  const key = id.toLowerCase();
+  return fetchJson(await resultsEndpoint(`results/${key}`, `results/${key}.json`));
+}
+export async function loadPublicResults() {
+  const data = await fetchJson(await resultsEndpoint('results', 'results/index.json'));
   if (!Array.isArray(data)) throw new Error('The participant results index is invalid.');
   return normalizeResults(data);
 }

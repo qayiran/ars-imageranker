@@ -492,7 +492,7 @@ export const TURKISH = {
   "Example {0} of {1}": "Örnek {0} / {1}",
   "No circular triplets were found in the recorded choices.": "Kayıtlı seçimlerde döngüsel üçlü bulunamadı.",
   "Loading recorded choices…": "Kayıtlı seçimler yükleniyor…",
-  "Recorded choices could not be loaded. A newly saved result may become available after the next site update. Try again later.": "Kayıtlı seçimler yüklenemedi. Yeni kaydedilen bir sonuç, sonraki site güncellemesinden sonra erişilebilir olabilir. Daha sonra yeniden deneyin.",
+  "Recorded choices could not be loaded. Check your connection and try again.": "Kayıtlı seçimler yüklenemedi. Bağlantınızı kontrol edip yeniden deneyin.",
   "Load the saved comparison history to see actual examples. Win totals alone cannot identify which characters form a loop.": "Gerçek örnekleri görmek için kayıtlı karşılaştırma geçmişini yükleyin. Yalnızca galibiyet toplamları, hangi karakterlerin döngü oluşturduğunu belirleyemez.",
   "Load circular examples": "Döngüsel örnekleri yükle",
   "These examples use recorded comparisons, not the final rating order. Circular preferences are possible and are not treated as errors.": "Bu örnekler son puan sırasını değil, kayıtlı karşılaştırmaları kullanır. Döngüsel tercihler mümkündür ve hata sayılmaz.",

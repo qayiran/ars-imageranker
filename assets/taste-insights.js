@@ -1,7 +1,7 @@
 import { IMAGES } from './catalog.js';
 import { ratingMap, characterRanks, rankDivergence } from './rank-divergence.js';
 import { validateHistory } from './ranking.js';
-import { fetchJson, normalizeResult } from './results-data.js';
+import { loadResultRecord, normalizeResult } from './results-data.js';
 
 export function darkHorseFavorites(rankings, results, { id } = {}) {
   const comparison = rankDivergence(rankings, results, { id });
@@ -45,8 +45,7 @@ export function circularPreferenceExamples(history, rankings) {
 }
 
 export async function loadRecordedChoices(id, rankings) {
-  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)) throw new Error('Invalid result code');
-  const record = await fetchJson(new URL(`../results/${id.toLowerCase()}.json`, import.meta.url));
+  const record = await loadResultRecord(id);
   const normalized = normalizeResult(record), expected = ratingMap(rankings);
   if (!normalized || normalized.provenance || normalized.id.toLowerCase() !== id.toLowerCase() || !expected
     || normalized.rankings.some((row) => Math.abs(row.elo - expected.get(row.id)) > 1e-6)) throw new Error('Recorded choices do not match this result');

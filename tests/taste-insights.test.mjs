@@ -62,10 +62,10 @@ test('circular examples enumerate actual directed cycles and agree with exact co
   assert.equal(circularPreferenceExamples(choices,mismatched),null);
   assert.equal(circularPreferenceExamples(undefined,real.find((item)=>item.provenance).rankings),null);
 });
-test('history loads only the fixed local result path and rejects mismatching or incomplete records', async () => {
+test('unconfigured previews load fixed local histories and reject mismatching or incomplete records', async () => {
   const normal=real.find((item)=>!item.provenance), record=JSON.parse(readFileSync(new URL(`../results/${normal.id}.json`,import.meta.url)));
   const previous=globalThis.fetch; let payload=record;
-  globalThis.fetch=async(url)=>{ assert.ok(url.pathname.endsWith(`/results/${normal.id}.json`)); return new Response(JSON.stringify(payload),{headers:{'Content-Type':'application/json'}}); };
+  globalThis.fetch=async(url)=>{ if (url.pathname.endsWith('/config.json')) return Response.json({resultsApiUrl:''}); assert.ok(url.pathname.endsWith(`/results/${normal.id}.json`)); return Response.json(payload); };
   try {
     assert.equal((await loadRecordedChoices(normal.id,normal.rankings)).length,preferenceConsistency(normal.rankings).cyclic);
     payload={...record,id:'00112233-4455-4677-8899-aabbccddeeaa'};
@@ -74,4 +74,22 @@ test('history loads only the fixed local result path and rejects mismatching or 
     await assert.rejects(loadRecordedChoices(normal.id,normal.rankings));
     await assert.rejects(loadRecordedChoices('../index',normal.rankings));
   } finally { globalThis.fetch=previous; }
+});
+test('configured histories use the live service with no static-file fallback or credentials', async (t) => {
+  const normal=real.find((item)=>!item.provenance), record=JSON.parse(readFileSync(new URL(`../results/${normal.id}.json`,import.meta.url)));
+  let api='https://history.test/', mode='ready', reads=0;
+  t.mock.method(globalThis,'fetch',async (url,options)=>{
+    assert.equal(options.credentials,'omit'); assert.equal(options.referrerPolicy,'no-referrer'); assert.equal(options.cache,'no-store');
+    if (String(url).endsWith('/config.json')) return Response.json({resultsApiUrl:api});
+    assert.equal(String(url),`https://history.test/results/${normal.id}`); reads++;
+    if(mode==='failure') return Response.json({error:'Unavailable'},{status:503});
+    return Response.json(mode==='invalid'?{...record,comparisons:record.comparisons.slice(1)}:record);
+  });
+  assert.equal((await loadRecordedChoices(normal.id.toUpperCase(),normal.rankings)).length,preferenceConsistency(normal.rankings).cyclic);
+  mode='failure'; await assert.rejects(loadRecordedChoices(normal.id,normal.rankings));
+  mode='invalid'; await assert.rejects(loadRecordedChoices(normal.id,normal.rankings));
+  for(const invalid of ['http://history.test','https://user:pass@history.test','https://history.test?key=secret','https://history.test#fragment']) {
+    api=invalid; await assert.rejects(loadRecordedChoices(normal.id,normal.rankings));
+  }
+  assert.equal(reads,3);
 });

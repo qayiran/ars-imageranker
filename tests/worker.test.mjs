@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import worker from '../server/worker.js';
 import { createQueue, MODEL } from '../assets/ranking.js';
 import { CATALOG_VERSION } from '../assets/catalog.js';
@@ -87,4 +88,52 @@ test('the native rate limiter returns retryable errors without writing a result'
   assert.equal(response.status, 429);
   assert.equal(response.headers.get('Retry-After'), '60');
   assert.equal(response.headers.get('Access-Control-Expose-Headers'), 'Retry-After');
+});
+test('a newly saved history is readable immediately without Pages publication or repository writes', async (t) => {
+  const repo = mockRepo(t), data = body();
+  await worker.fetch(request(data), env);
+  const stored = repo.files.get(`results/${data.id}.json`).content;
+  stored.privateMetadata = 'must-not-expose'; stored.rankings[0].extra = 'must-not-expose';
+  stored.comparisons[0].ip = 'must-not-expose';
+  const before = repo.writes();
+  const limited = { ...env, SUBMISSIONS_LIMITER: { limit: () => { throw new Error('Reads must not consume save limits'); } } };
+  const response = await worker.fetch(new Request(`https://results.example/results/${data.id.toUpperCase()}`, { headers: { Origin: env.ALLOWED_ORIGIN } }), limited);
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('Access-Control-Allow-Origin'), env.ALLOWED_ORIGIN);
+  assert.equal(response.headers.get('Cache-Control'), 'no-store');
+  const record = await response.json();
+  assert.equal(record.id, data.id); assert.equal(record.rankings.length, 17);
+  assert.deepEqual(record.comparisons, data.comparisons);
+  assert.equal(record.privateMetadata, undefined); assert.equal(record.rankings[0].extra, undefined);
+  assert.equal(repo.writes(), before);
+});
+test('history routes reject unknown IDs, wrong methods, unexpected origins and invalid stored choices', async (t) => {
+  const repo = mockRepo(t), data = body(), url = `https://results.example/results/${data.id}`;
+  assert.equal((await worker.fetch(new Request(url), env)).status, 404);
+  assert.equal((await worker.fetch(new Request(url, { method: 'POST' }), env)).status, 405);
+  assert.equal((await worker.fetch(new Request(url, { headers: { Origin: 'https://outside.example' } }), env)).status, 403);
+  for (const path of ['/results/index.json', '/results/not-a-uuid', `/results/${data.id}/extra`]) {
+    assert.equal((await worker.fetch(new Request(`https://results.example${path}`), env)).status, 404);
+  }
+  await worker.fetch(request(data), env);
+  const stored = repo.files.get(`results/${data.id}.json`).content;
+  stored.comparisons.pop();
+  const invalid = await worker.fetch(new Request(url), env);
+  assert.equal(invalid.status, 503); assert.ok(!(await invalid.text()).includes('server-secret'));
+  stored.id = '00112233-4455-4677-8899-aabbccddeeaa';
+  assert.equal((await worker.fetch(new Request(url), env)).status, 503);
+  assert.equal(repo.writes(), 2);
+});
+test('manual histories remain explicitly absent, and repository failures stay retryable', async (t) => {
+  const repo = mockRepo(t);
+  const index = JSON.parse(readFileSync(new URL('../results/index.json', import.meta.url)));
+  const manual = index.find((row) => row.provenance);
+  repo.files.set(`results/${manual.id}.json`, { sha: 'manual-sha', content: { ...manual, comparisons: [{ winner: 'fake' }] } });
+  const response = await worker.fetch(new Request(`https://results.example/results/${manual.id}`), env);
+  assert.equal(response.status, 200);
+  const record = await response.json();
+  assert.equal(record.provenance.kind, 'manual'); assert.equal(record.comparisons, undefined);
+  t.mock.method(globalThis, 'fetch', async () => Response.json({ error: 'server-secret' }, { status: 503 }));
+  const failed = await worker.fetch(new Request(`https://results.example/results/${body().id}`), env);
+  assert.equal(failed.status, 503); assert.ok(!(await failed.text()).includes('server-secret'));
 });

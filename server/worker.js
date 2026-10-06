@@ -1,5 +1,6 @@
 import { resultCode } from '../assets/result-identity.js';
 import { validateSubmission, summaryFrom } from '../assets/ranking.js';
+import { normalizeResult } from '../assets/results-data.js';
 
 const MAX_BODY_BYTES = 64 * 1024;
 class HttpError extends Error {
@@ -123,9 +124,27 @@ export default {
       return new Response(null, { status: 204, headers: { ...cors, 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Max-Age': '86400' } });
     }
     const url = new URL(request.url);
-    if (url.pathname !== '/results') return json({ error: 'Not found.' }, 404);
+    const recordPath = /^\/results\/([0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})$/i.exec(url.pathname);
+    if (url.pathname !== '/results' && !recordPath) return json({ error: 'Not found.' }, 404);
     try {
       checkEnvironment(env);
+      if (recordPath) {
+        if (request.method !== 'GET') return json({ error: 'Use GET.' }, 405, { Allow: 'GET, OPTIONS' });
+        const id = recordPath[1].toLowerCase();
+        const file = await readFile(env, `results/${id}.json`);
+        if (!file) return json({ error: 'This result could not be found.' }, 404);
+        const summary = normalizeResult(file.content);
+        if (!summary || summary.id.toLowerCase() !== id) throw new HttpError(503, 'The saved result is invalid.');
+        // Serve only public result fields and validated choices, never arbitrary
+        // repository metadata. Screenshot imports have no recovered choices.
+        const rankings = summary.rankings.map(({ id, name, elo, uncertainty, wins, count, estimatedInterval }) =>
+          ({ id, name, elo, uncertainty, wins, count, ...(estimatedInterval ? { estimatedInterval } : {}) }));
+        if (summary.provenance) return json({ ...summary, rankings });
+        let submission;
+        try { submission = validateSubmission(file.content); }
+        catch { throw new HttpError(503, 'The saved comparison history is invalid.'); }
+        return json({ ...summary, rankings, comparisons: submission.comparisons });
+      }
       if (request.method === 'GET') {
         const index = validateIndex(await readFile(env, 'results/index.json'));
         return json(index);
