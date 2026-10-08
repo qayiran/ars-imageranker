@@ -33,3 +33,10 @@ test('missing modules and circular imports fail the build instead of shipping in
   assert.throws(() => fingerprintAssets(new Map([['a.js', "import './b.js';"], ['b.js', "import './a.js';"]])), /Circular asset imports/);
   assert.throws(() => rewritePageAssets('<script src="assets/missing.js"></script>', new Map()), /Unknown page asset/);
 });
+test('module-worker URLs are fingerprinted with their complete dependency chain', () => {
+  const source = new Map([['app.js', "new Worker(new URL('./worker.js', import.meta.url), {type:'module'}); const data = new URL('../results/index.json', import.meta.url);"], ['worker.js', "import { fit } from './model.js'; self.onmessage=fit;"], ['model.js', 'export const fit=()=>1;']]);
+  const before=fingerprintAssets(source);source.set('model.js','export const fit=()=>2;');const after=fingerprintAssets(source);
+  for (const name of source.keys()) assert.notEqual(before.get(name).filename,after.get(name).filename);
+  assert.ok(after.get('app.js').content.toString().includes(`new URL('./${after.get('worker.js').filename}', import.meta.url)`));
+  assert.ok(after.get('app.js').content.toString().includes("new URL('../results/index.json', import.meta.url)"));
+});

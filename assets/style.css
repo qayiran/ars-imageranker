@@ -275,3 +275,4 @@
 @media(max-width:720px){.result-insights-grid{margin:24px 0}}
 .result-card-consistency{font-size:11px;color:var(--green);padding-top:13px;margin:0;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
 .result-card-consistency+.result-card-divergence{padding-top:7px;border-top:0}
+.bayesian-plot svg{display:block;width:100%;height:auto}.bayesian-method,.bayesian-table-details{margin-top:16px;font-size:12px;color:var(--muted);line-height:1.8}.bayesian-method summary,.bayesian-table-details summary{cursor:pointer;color:var(--green);padding:5px 0}.bayesian-status{font-size:12px;line-height:1.8}.bayesian-status p{margin:0 0 10px}.bayesian-diagnostics{font-variant-numeric:tabular-nums}.bayesian-table{min-width:620px}.bayesian-table td{white-space:nowrap}#bayesian-community{scroll-margin-top:24px}

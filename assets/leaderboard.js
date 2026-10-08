@@ -1,5 +1,6 @@
 import { IMAGES, TOTAL_PAIRS } from './catalog.js';
 import { normalizeResult } from './results-data.js';
+import { meanConfidenceInterval95 } from './confidence-interval.js';
 
 // Every completed ranking covers all 17 characters and gives each equal weight.
 // Do not pool sequential TrueSkill sessions as if they were one rating history.
@@ -24,6 +25,7 @@ export function buildLeaderboard(results) {
       topVotes: sessions.filter((session) => session.rankings[0].id === id).length,
       minimum: Math.min(...rows.map((row) => row.elo)),
       maximum: Math.max(...rows.map((row) => row.elo)),
+      confidenceInterval: meanConfidenceInterval95(rows.map((row) => row.elo)),
     };
   }).sort((a, b) => b.elo - a.elo || a.name.localeCompare(b.name));
   return { rankings, sessionCount, comparisonCount: sessionCount * TOTAL_PAIRS, manualCount: sessions.filter((session) => session.provenance).length };

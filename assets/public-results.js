@@ -1,3 +1,4 @@
+import { setBayesianCohort, showBayesianCommunity, suspendBayesianCommunity } from './bayesian-community.js';
 import { t, locale, translateError } from './language.js';
 import { IMAGES, imageUrl } from './catalog.js';
 import { loadPublicResults } from './results-data.js';
@@ -45,6 +46,8 @@ function renderGlobalLeaderboard() {
   else if (!sharedLoaded) content.innerHTML = `<p class="muted" role="status">${t`Loading leaderboard…`}</p>`;
   else if (!participantBoard.sessionCount) content.innerHTML = `<div class="empty-state"><h3>${t`No participant scores yet`}</h3><p>${t`The global leaderboard will combine completed rankings as they are saved.`}</p></div>`;
   else renderLeaderboard(content, participantBoard);
+  if (location.hash === '#bayesian-community') target.querySelector('.leaderboard-plot')?.setAttribute('open', '');
+  showBayesianCommunity();
   const insights = document.querySelector('#community-insights');
   if (insights) {
     if (sharedLoaded && !sharedError) renderCommunityInsights(insights, participants);
@@ -69,7 +72,7 @@ function renderList() {
 }
 function renderSelection() {
   const id = location.hash.slice(1);
-  if (!id || id === 'leaderboard') { renderList(); return; }
+  if (!id || ['leaderboard', 'bayesian-community'].includes(id)) { renderList(); return; }
   const item = participants.find((result) => result.id === id);
   if (!item) {
     if (!sharedLoaded) root.innerHTML = `<p class="muted" role="status">${t`Loading the requested ranking…`}</p>`;
@@ -81,7 +84,7 @@ function renderSelection() {
     comparisonStatus: !sharedLoaded ? 'loading' : sharedError ? 'error' : 'ready', onRetry: refreshParticipants });
 }
 function updateView() {
-  if (location.hash && location.hash !== '#leaderboard') renderSelection();
+  if (location.hash && !['#leaderboard', '#bayesian-community'].includes(location.hash)) renderSelection();
   else if (document.querySelector('#public-result-panels')) {
     renderGlobalLeaderboard();
     renderPanels();
@@ -90,16 +93,17 @@ function updateView() {
 }
 async function refreshParticipants() {
   const revision = ++refreshId;
-  sharedLoaded = false; sharedError = ''; updateView();
+  sharedLoaded = false; sharedError = ''; suspendBayesianCommunity(); updateView();
   try { const data = await loadPublicResults(); if (revision !== refreshId) return; participants = data; participantBoard = buildLeaderboard(data);
     divergences = new Map(data.map((item) => [item.id, rankDivergence(item.rankings, data, item)])); }
   catch (error) { if (revision !== refreshId) return; participants = []; participantBoard = buildLeaderboard([]); divergences = new Map(); sharedError = error.message; }
-  sharedLoaded = true; updateView();
+  sharedLoaded = true; setBayesianCohort(participants); updateView();
+  if (location.hash === '#bayesian-community') document.querySelector('#bayesian-community')?.scrollIntoView({ block: 'start' });
 }
 window.addEventListener('hashchange', () => {
   renderSelection();
   const heading = root.querySelector('h2'); if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: true }); }
-  root.scrollIntoView({ block: 'start' });
+  (location.hash === '#bayesian-community' ? document.querySelector('#bayesian-community') : root)?.scrollIntoView({ block: 'start' });
 });
 renderSelection();
 void refreshParticipants();

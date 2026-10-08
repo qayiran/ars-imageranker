@@ -170,3 +170,10 @@ Verification passed: all 76 Node tests, the full 136-vote/save browser regressio
 Removed the manually reconstructed nisacx result (c686f7b4-9284-453e-801f-899de0b7aa0b) from the public index and result files after verifying Niase’s complete 136-choice submission (70b2edcc-0990-413d-81d0-7a46ab63f576). Every other participant record and summary remains intact. Aggregates now use the real submission without counting the screenshot reconstruction as a separate session.
 
 Manual-result regression coverage now uses a synthetic test-only record, with its own fixture UUID and name, instead of depending on the retired public participant. The Pages artifact excludes these fixtures. Unit checks, the build, recovery/browser rendering and circular-example statistics pass after removal.
+
+
+## Local preview: Bayesian global forest plot
+
+The existing **View global forest plot** disclosure now contains only the Bayesian community plot, with 95% credible intervals, a nested numeric table with first-place probabilities, and a collapsible model explanation. There is no separate Bayesian section or Student-t plot. The arithmetic-average leaderboard table and individual TrueSkill results keep their calculations; the plot introduction labels the difference between the score types. Histories load and fitting starts only after expanding the disclosure. New participants invalidate the checked summary cache, and navigation/language switches preserve a running fit.
+
+The static hierarchical probit model uses Gaussian performance comparisons and complete histories from the existing read-only endpoint. The browser runs blocked Gibbs/slice inference in a module worker, verifies convergence, and caches only checked summaries. See [BAYESIAN_MODEL.md](BAYESIAN_MODEL.md) for the full specification and independent validation. The asset fingerprint builder rewrites module-worker URLs so the deployed build and local source execute the same model.

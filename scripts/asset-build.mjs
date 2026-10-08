@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { posix } from 'node:path';
+const moduleUrls = /(new\s+URL\s*\(\s*)(['"])(\.\/[^'"]+)\2(\s*,\s*import\.meta\.url\s*\))/g;
 const imports = /(\b(?:from|import)\s*)(['"])(\.\/[^'"]+)\2/g;
 // A dependency's content-based filename becomes part of its parent's content,
 // so changing a leaf also invalidates every importing entry point.
@@ -12,13 +13,14 @@ export function fingerprintAssets(sources) {
     visiting.add(name);
     let content = Buffer.from(sources.get(name));
     if (name.endsWith('.js')) {
-      const text = content.toString('utf8').replace(imports, (match, prefix, quote, specifier) => {
+      const rewrite = (match, prefix, quote, specifier, suffix = '') => {
         const pathname = specifier.split(/[?#]/)[0];
         const dependency = posix.normalize(posix.join(posix.dirname(name), pathname));
         const built = build(dependency);
         const relative = posix.relative(posix.dirname(name), built.filename);
-        return `${prefix}${quote}${relative.startsWith('.') ? relative : `./${relative}`}${specifier.slice(pathname.length)}${quote}`;
-      });
+        return `${prefix}${quote}${relative.startsWith('.') ? relative : `./${relative}`}${specifier.slice(pathname.length)}${quote}${suffix}`;
+      };
+      const text = content.toString('utf8').replace(imports, (match, prefix, quote, specifier) => rewrite(match, prefix, quote, specifier)).replace(moduleUrls, rewrite);
       content = Buffer.from(text);
     }
     const extension = posix.extname(name);

@@ -1,0 +1,16 @@
+{
+  "source": "SciPy observed-data two-dimensional quadrature; tester effects analytically marginalized",
+  "wins": 14,
+  "losses": 6,
+  "score": {
+    "mean": 1120.7400352803613,
+    "lower": 984.3523164989366,
+    "upper": 1332.6056607621751
+  },
+  "tau": {
+    "mean": 320.74466202835663,
+    "lower": 16.752713416234606,
+    "upper": 794.0651488646537
+  },
+  "firstProbability": 0.9575587296680442
+}

@@ -20,6 +20,13 @@ async function verifyTable(page, board) {
   }
 }
 async function noOverflow(page) { assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)); }
+async function verifyForestPlacement(page) {
+  assert.equal(await page.locator('.leaderboard-plot').count(), 1);
+  assert.equal(await page.locator('.leaderboard-plot #bayesian-community').count(), 1);
+  assert.equal(await page.locator('#results-browser > #bayesian-community').count(), 0);
+  assert.equal(await page.locator('.confidence-table').count(), 0);
+}
+
 try {
   const emptyContext = await browser.newContext(); await emptyContext.addInitScript(() => { try { localStorage.setItem('ars-language', 'en'); } catch {} });
   await emptyContext.route('**/config.json', (route) => route.fulfill({ json: { resultsApiUrl: '' } }));
@@ -31,14 +38,14 @@ try {
   await context.route('**/config.json', (route) => route.fulfill({ json: { resultsApiUrl: 'https://results.test' } }));
   let count = 2, unavailable = false;
   await context.route('https://results.test/results', (route) => route.fulfill(unavailable ? { status: 503, json: { error: 'Service unavailable for this test.' } } : { json: [...participants.slice(0, count), { ...participants[0], example: true }, participants[0]] }));
+  await context.route('https://results.test/results/*', route => route.fulfill({status:503,json:{error:'Histories unavailable for this table-only fixture'}}));
   const page = await context.newPage(); page.on('pageerror', (error) => errors.push(error.message));
   await page.goto(`${base}/results.html#leaderboard`); await page.locator('.leaderboard-table').waitFor();
   await verifyTable(page, buildLeaderboard(participants.slice(0, 2)));
   assert.equal(await page.locator('.leaderboard-stats .stat-value').first().textContent(), '2');
   assert.ok((await page.locator('#participant-results-title').locator('..').textContent()).includes('2 saved rankings'));
   await page.getByText('View global forest plot', { exact: true }).click();
-  assert.equal(await page.locator('#global-leaderboard .plot-value').count(), 17);
-  assert.ok((await page.locator('#global-leaderboard svg desc').textContent()).includes('lowest to highest'));
+  await verifyForestPlacement(page);
   await page.getByLabel('Find a ranking').fill('no matching participant'); assert.equal(await page.locator('.result-card').count(), 0);
   await page.getByLabel('Sort by').selectOption('name'); await verifyTable(page, buildLeaderboard(participants.slice(0, 2)));
   assert.equal(await page.locator('.leaderboard-plot').getAttribute('open'), '');
@@ -46,6 +53,7 @@ try {
   count = 3; await page.getByRole('button', { name: 'Refresh' }).click();
   await page.locator(`.result-card[href="#${participants[2].id}"]`).waitFor(); await verifyTable(page, buildLeaderboard(participants));
   await page.getByText('View global forest plot', { exact: true }).click(); await noOverflow(page);
+  await verifyForestPlacement(page);
   await page.screenshot({ path: `${out}/participant-leaderboard-dark-desktop.png`, fullPage: true });
   for (const width of [390, 320]) {
     await page.setViewportSize({ width, height: 844 }); await page.reload(); await page.locator('.leaderboard-table').waitFor();
@@ -56,7 +64,18 @@ try {
     await page.screenshot({ path: `${out}/participant-leaderboard-dark-${width}.png`, fullPage: true });
   }
   await page.getByLabel('Color theme').selectOption('light'); await noOverflow(page);
+  await page.locator('[data-language-picker]').selectOption('tr');
+  assert.ok((await page.locator('#global-leaderboard .chart-card').textContent()).includes('Bayesçi topluluk puanları'));
+  await noOverflow(page);
+  await page.locator('[data-language-picker]').selectOption('en');
   await page.screenshot({ path: `${out}/participant-leaderboard-light-320.png`, fullPage: true });
+  count = 1; await page.reload(); await page.locator('.leaderboard-table').waitFor();
+  await page.getByText('View global forest plot', { exact: true }).click();
+  await page.getByText('At least two complete choice histories are needed for the Bayesian ranking.', { exact: true }).waitFor();
+  assert.equal(await page.locator('#global-leaderboard svg').count(), 0);
+  assert.equal(await page.locator('#global-leaderboard .plot-value line').count(), 0);
+  await verifyForestPlacement(page);
+  count = 3;
   unavailable = true; await page.getByRole('button', { name: 'Refresh' }).click();
   await page.getByRole('heading', { name: 'Leaderboard unavailable' }).waitFor(); assert.equal(await page.locator('.leaderboard-table').count(), 0);
   unavailable = false; await page.getByRole('button', { name: 'Retry', exact: true }).click();
@@ -68,5 +87,5 @@ try {
   assert.ok((await page.locator('.leaderboard-winner img').getAttribute('src')).includes('/_site/showcase/'));
   await page.locator('.leaderboard-table [data-result-image]').first().click(); await page.locator('dialog[open]').waitFor();
   assert.deepEqual(errors, []);
-  console.log(JSON.stringify({ status: 'passed', checked: ['17 combined ratings and win statistics', 'same-name sessions counted separately and duplicate IDs excluded', 'empty state without preview data', 'search-independent totals and expanded chart', 'refresh, outage and retry', 'global range/personal posterior plots', 'light/dark layouts down to 320px', 'Pages subpath gallery links'], screenshots: out }, null, 2));
+  console.log(JSON.stringify({ status: 'passed', checked: ['17 combined ratings and win statistics', 'same-name sessions counted separately and duplicate IDs excluded', 'empty and single-session states without invented Bayesian scores', 'search-independent totals and expanded chart', 'refresh, outage and retry', 'one expandable global Bayesian plot/personal posterior plots', 'Turkish/English', 'light/dark layouts down to 320px', 'Pages subpath gallery links'], screenshots: out }, null, 2));
 } finally { await browser.close(); }
