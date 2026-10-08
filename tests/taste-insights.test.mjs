@@ -1,3 +1,4 @@
+import { testResults } from './result-fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -5,7 +6,7 @@ import { IMAGES } from '../assets/catalog.js';
 import { rankingsFrom } from '../assets/ranking.js';
 import { preferenceConsistency } from '../assets/community-insights.js';
 import { darkHorseFavorites, ratingFingerprint, circularPreferenceExamples, loadRecordedChoices } from '../assets/taste-insights.js';
-const real = JSON.parse(readFileSync(new URL('../results/index.json', import.meta.url)));
+const real = testResults();
 function session(id, scores) {
   return { ...structuredClone(real.find((item) => !item.provenance)), id: `00112233-4455-4677-8899-aabbccddee0${id}`,
     rankings: real.find((item) => !item.provenance).rankings.map((row) => ({ ...row, elo: scores(IMAGES.findIndex(({ id }) => id === row.id)) })) };

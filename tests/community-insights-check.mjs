@@ -1,3 +1,4 @@
+import { testResults } from './result-fixtures.mjs';
 // Optional browser integration; no real submissions or service writes.
 import assert from 'node:assert/strict';
 import { readFile, mkdir } from 'node:fs/promises';
@@ -7,7 +8,7 @@ import { CATALOG_VERSION } from '../assets/catalog.js';
 import { MODEL, createQueue, rankingsFrom } from '../assets/ranking.js';
 const { chromium } = await import(pathToFileURL(process.env.PLAYWRIGHT_MODULE).href);
 const base = process.env.PREVIEW_URL || 'http://127.0.0.1:8000';
-const records = JSON.parse(await readFile(new URL('../results/index.json', import.meta.url), 'utf8'));
+const records = testResults();
 const normal = records.find((item) => !item.provenance), manual = records.find((item) => item.provenance);
 const aggregate = communityInsights(records);
 const artifacts = '/tmp/ars-community-insights'; await mkdir(artifacts, { recursive: true });
@@ -93,7 +94,7 @@ try {
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
     await page.locator('.most-divisive').screenshot({ path: `${artifacts}/${language}-${theme}-${width}-divisive.png` });
     await assertCardConsistency();
-    await page.locator('.result-card').filter({ hasText: 'nisacx' }).screenshot({ path: `${artifacts}/${language}-${theme}-${width}-manual-card.png` });
+    await page.locator('.result-card').filter({ hasText: 'Recovered fixture' }).screenshot({ path: `${artifacts}/${language}-${theme}-${width}-manual-card.png` });
     await page.locator(`.result-card[href="#${normal.id}"]`).screenshot({ path: `${artifacts}/${language}-${theme}-${width}-normal-card.png` });
   }
   mode = 'solo'; await page.goto(`${base}/results.html#${normal.id}`);

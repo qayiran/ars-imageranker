@@ -1,3 +1,4 @@
+import { testResults, mockStaticResults } from './result-fixtures.mjs';
 // Optional browser checks. No requests or writes to the real results service.
 import assert from 'node:assert/strict';
 import { readFile, mkdir } from 'node:fs/promises';
@@ -8,8 +9,8 @@ const { chromium } = await import(pathToFileURL(process.env.PLAYWRIGHT_MODULE).h
 const base = process.env.PREVIEW_URL || 'http://127.0.0.1:8000';
 const artifacts = '/tmp/ars-recovery-preview';
 await mkdir(artifacts, { recursive: true });
-const results = JSON.parse(await readFile(new URL('../results/index.json', import.meta.url), 'utf8'));
-const manual = results.find((item) => item.username === 'nisacx' && item.provenance?.kind === 'manual');
+const results = testResults();
+const manual = results.find((item) => item.username === 'Recovered fixture' && item.provenance?.kind === 'manual');
 assert.ok(manual);
 const key = `showcase-session:${CATALOG_VERSION}`, outboxKey = `showcase-outbox:${CATALOG_VERSION}`;
 const completed = { id: '00112233-4455-4677-8899-aabbccddeeaa', username: 'Recovery test', model: MODEL, catalogVersion: CATALOG_VERSION,
@@ -76,7 +77,7 @@ try {
   await replacement.close();
 
   // Review the actual recovered result on source and generated Pages URLs.
-  const visuals = await context(); const preview = await visuals.newPage();
+  const visuals = await context(); await mockStaticResults(visuals); const preview = await visuals.newPage();
   for (const prefix of ['', '/_site']) {
     await preview.goto(`${base}${prefix}/results.html#${manual.id}`);
     await preview.locator('#public-ranking-detail .plot-scroll svg').waitFor();

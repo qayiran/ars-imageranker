@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { manualFixture } from './result-fixtures.mjs';
 import worker from '../server/worker.js';
 import { createQueue, MODEL } from '../assets/ranking.js';
 import { CATALOG_VERSION } from '../assets/catalog.js';
@@ -126,8 +126,7 @@ test('history routes reject unknown IDs, wrong methods, unexpected origins and i
 });
 test('manual histories remain explicitly absent, and repository failures stay retryable', async (t) => {
   const repo = mockRepo(t);
-  const index = JSON.parse(readFileSync(new URL('../results/index.json', import.meta.url)));
-  const manual = index.find((row) => row.provenance);
+  const manual = structuredClone(manualFixture);
   repo.files.set(`results/${manual.id}.json`, { sha: 'manual-sha', content: { ...manual, comparisons: [{ winner: 'fake' }] } });
   const response = await worker.fetch(new Request(`https://results.example/results/${manual.id}`), env);
   assert.equal(response.status, 200);

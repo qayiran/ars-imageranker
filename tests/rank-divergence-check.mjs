@@ -1,3 +1,4 @@
+import { testResults } from './result-fixtures.mjs';
 // Optional browser checks; all API writes and reads use a test service.
 import assert from 'node:assert/strict';
 import { readFile, mkdir } from 'node:fs/promises';
@@ -7,7 +8,7 @@ import { CATALOG_VERSION } from '../assets/catalog.js';
 import { createQueue, rankingsFrom, MODEL } from '../assets/ranking.js';
 const { chromium } = await import(pathToFileURL(process.env.PLAYWRIGHT_MODULE).href);
 const base = process.env.PREVIEW_URL || 'http://127.0.0.1:8000';
-const records = JSON.parse(await readFile(new URL('../results/index.json', import.meta.url), 'utf8'));
+const records = testResults();
 const manual = records.find((item) => item.provenance?.kind === 'manual');
 const normal = records.find((item) => !item.provenance);
 const artifacts = '/tmp/ars-divergence-preview';

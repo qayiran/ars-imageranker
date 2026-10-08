@@ -1,3 +1,4 @@
+import { testResults } from './result-fixtures.mjs';
 // Optional browser verification. All service writes are mocked.
 import assert from 'node:assert/strict';
 import { readFile, mkdir } from 'node:fs/promises';
@@ -7,7 +8,7 @@ import { IMAGES, CATALOG_VERSION } from '../assets/catalog.js';
 import { MODEL, createQueue } from '../assets/ranking.js';
 const { chromium }=await import(pathToFileURL(process.env.PLAYWRIGHT_MODULE).href);
 const base=process.env.PREVIEW_URL||'http://127.0.0.1:8000', artifacts='/tmp/ars-taste-insights'; await mkdir(artifacts,{recursive:true});
-const records=JSON.parse(await readFile(new URL('../results/index.json',import.meta.url)));
+const records=testResults();
 const own=records.find(({username})=>username==='qayiran'), manual=records.find(({provenance})=>provenance);
 const record=JSON.parse(await readFile(new URL(`../results/${own.id}.json`,import.meta.url)));
 const expected=circularPreferenceExamples(record.comparisons,own.rankings);

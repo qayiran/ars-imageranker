@@ -1,3 +1,4 @@
+import { testResults } from './result-fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -6,7 +7,7 @@ import { rankingsFrom } from '../assets/ranking.js';
 import { FACTIONS, UNALIGNED } from '../assets/group-preferences.js';
 import { closestMatches, preferenceConsistency, communityInsights } from '../assets/community-insights.js';
 const fixtures = JSON.parse(readFileSync(new URL('./fixtures/participant-results.json', import.meta.url), 'utf8'));
-const real = JSON.parse(readFileSync(new URL('../results/index.json', import.meta.url), 'utf8'));
+const real = testResults();
 function session(index, score = (_, i) => 2000 - i * 50) {
   const original = structuredClone(fixtures[0]);
   return { ...original, example: false, id: `00112233-4455-4677-8899-aabbccddee0${index}`, username: 'Shared nickname',

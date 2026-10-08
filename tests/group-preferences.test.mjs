@@ -1,3 +1,4 @@
+import { manualFixture } from './result-fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -51,7 +52,7 @@ test('regional means cover all seventeen characters, preserve fractional scores 
 });
 
 test('screenshot ratings produce honest averages without needing missing wins or model uncertainty', () => {
-  const manual = JSON.parse(readFileSync(new URL('../results/c686f7b4-9284-453e-801f-899de0b7aa0b.json', import.meta.url), 'utf8'));
+  const manual = structuredClone(manualFixture);
   const data = groupPreferences(manual.rankings);
   assert.equal(mean(data, 'patriots'), 10042 / 11);
   assert.equal(mean(data, 'loyalists'), 4680 / 4);

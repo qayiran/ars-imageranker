@@ -1,3 +1,4 @@
+import { manualFixture } from './result-fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -73,7 +74,7 @@ test('reference ordering matches mean character ratings, with equal weight acros
 });
 
 test('manual recovered ratings work without win counts and identify rounded reference sessions', () => {
-  const manual = JSON.parse(readFileSync(new URL('../results/c686f7b4-9284-453e-801f-899de0b7aa0b.json', import.meta.url), 'utf8'));
+  const manual = structuredClone(manualFixture);
   const own = session(1);
   const data = rankDivergence(own.rankings, [own, manual], own);
   assert.equal(data.peerCount, 1); assert.equal(data.manualPeerCount, 1);

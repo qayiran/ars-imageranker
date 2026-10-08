@@ -1,10 +1,11 @@
+import { testResults } from './result-fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { IMAGES } from '../assets/catalog.js';
 import { characterProfile } from '../assets/exploration-data.js';
 import { resultCardData } from '../assets/result-card.js';
-const real = JSON.parse(readFileSync(new URL('../results/index.json', import.meta.url), 'utf8'));
+const real = testResults();
 const fixtures = JSON.parse(readFileSync(new URL('./fixtures/participant-results.json', import.meta.url), 'utf8'));
 function session(index, score = (_, i) => 2000 - i * 50) {
   const item = structuredClone(fixtures[0]);
@@ -49,7 +50,7 @@ test('profiles include recovered ratings but exclude partial win statistics and 
 test('result card uses canonical top three, full result code and unchanged group normalization', () => {
   const manual = real.find((item) => item.provenance);
   const data = resultCardData([...manual.rankings].reverse(), manual);
-  assert.equal(data.username, 'nisacx'); assert.equal(data.code, manual.id.toUpperCase());
+  assert.equal(data.username, 'Recovered fixture'); assert.equal(data.code, manual.id.toUpperCase());
   assert.deepEqual(data.top.map(({ id }) => id), ['louisiana', 'connecticut', 'south-carolina']);
   assert.equal(data.faction.id, 'loyalists'); assert.equal(data.region.id, 'southern'); assert.ok(data.provenance);
   assert.equal(resultCardData(manual.rankings, { ...manual, id: 'bad' }), null);

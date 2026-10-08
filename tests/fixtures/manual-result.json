@@ -1,8 +1,8 @@
 {
-  "id": "c686f7b4-9284-453e-801f-899de0b7aa0b",
-  "resultCode": "C686F7B4-9284-453E-801F-899DE0B7AA0B",
-  "username": "nisacx",
-  "completedAt": "2026-10-04T18:37:00.000Z",
+  "id": "00112233-4455-4677-8899-aabbccddeeb0",
+  "resultCode": "00112233-4455-4677-8899-AABBCCDDEEB0",
+  "username": "Recovered fixture",
+  "completedAt": "2026-01-01T00:00:00.000Z",
   "model": "trueskill-1v1-v1",
   "catalogVersion": "showcase-2026-10-v1",
   "comparisonCount": 136,

@@ -163,3 +163,10 @@ Shared frontend endpoint selection now loads histories from the configured live 
 `tests/live-history-check.mjs` completes a fresh session through the actual Worker against mocked GitHub storage, makes every static history URL unavailable, and verifies automatic examples on source and built Pages paths. It checks Turkish/English, phone width, cache reuse and outage/retry without production writes. Unit coverage includes read-only access, UUID restrictions, CORS, missing/corrupt records, metadata filtering, manual imports, endpoint selection, invalid service URLs and absence of static fallback when live saving is configured.
 
 Verification passed: all 76 Node tests, the full 136-vote/save browser regression, the circular-example browser regression, the fresh-result live-history regression, static checks, the Pages build and Wrangler 4.147.0 `deploy --dry-run`. All 12 participant records and their index were preserved unchanged. Production activation requires the owner to deploy the updated Worker, then run the manual Pages workflow once.
+
+
+## Retire superseded manual recovery — 8 October 2026
+
+Removed the manually reconstructed nisacx result (c686f7b4-9284-453e-801f-899de0b7aa0b) from the public index and result files after verifying Niase’s complete 136-choice submission (70b2edcc-0990-413d-81d0-7a46ab63f576). Every other participant record and summary remains intact. Aggregates now use the real submission without counting the screenshot reconstruction as a separate session.
+
+Manual-result regression coverage now uses a synthetic test-only record, with its own fixture UUID and name, instead of depending on the retired public participant. The Pages artifact excludes these fixtures. Unit checks, the build, recovery/browser rendering and circular-example statistics pass after removal.

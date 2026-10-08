@@ -1,3 +1,4 @@
+import { testResults, mockStaticResults } from './result-fixtures.mjs';
 // Optional browser integration; network writes are mocked and no results are changed.
 import assert from 'node:assert/strict';
 import { readFile, mkdir } from 'node:fs/promises';
@@ -8,7 +9,7 @@ import { IMAGES, CATALOG_VERSION } from '../assets/catalog.js';
 import { MODEL, createQueue } from '../assets/ranking.js';
 const { chromium } = await import(pathToFileURL(process.env.PLAYWRIGHT_MODULE).href);
 const base = process.env.PREVIEW_URL || 'http://127.0.0.1:8000';
-const records = JSON.parse(await readFile(new URL('../results/index.json', import.meta.url), 'utf8'));
+const records = testResults();
 const manual = records.find((item) => item.provenance), normal = records.find((item) => item.username === 'qayiran');
 const artifacts = '/tmp/ars-exploration'; await mkdir(artifacts, { recursive: true });
 const browser = await chromium.launch({ executablePath: '/usr/bin/chromium', headless: true, args: ['--no-sandbox'] });
@@ -99,7 +100,7 @@ try {
   await exportCard('tr', 'light', 'personal-card');
   assert.deepEqual(errors, []); assert.deepEqual(failures, []);
   assert.ok(writes.every((id) => id === completed.id), 'Only the explicitly seeded mock session may submit');
-  const broken = await browser.newContext(); const errorPage = await broken.newPage();
+  const broken = await browser.newContext(); const errorPage = await broken.newPage(); await mockStaticResults(broken);
   await broken.route('**/config.json', (route) => route.fulfill({ json: { resultsApiUrl: '' } }));
   await broken.route('**/showcase/*.png', (route) => route.fulfill({ status: 404, body: '' }));
   await errorPage.goto(`${base}/_site/results.html#${manual.id}`);
