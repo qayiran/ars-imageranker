@@ -1,0 +1,744 @@
+{
+  "id": "31d29950-4ac1-4d6b-89ee-dc13736589fe",
+  "username": "Adobe",
+  "catalogVersion": "showcase-2026-10-v1",
+  "model": "trueskill-1v1-v1",
+  "comparisons": [
+    {
+      "winner": "new-jersey",
+      "loser": "louisiana"
+    },
+    {
+      "winner": "south-carolina",
+      "loser": "delaware"
+    },
+    {
+      "winner": "pennsylvania",
+      "loser": "north-carolina"
+    },
+    {
+      "winner": "maine",
+      "loser": "florida"
+    },
+    {
+      "winner": "vermont",
+      "loser": "new-york"
+    },
+    {
+      "winner": "virginia",
+      "loser": "masachusetts"
+    },
+    {
+      "winner": "connecticut",
+      "loser": "georgia"
+    },
+    {
+      "winner": "rhode-island",
+      "loser": "new-hampshire"
+    },
+    {
+      "winner": "connecticut",
+      "loser": "rhode-island"
+    },
+    {
+      "winner": "delaware",
+      "loser": "masachusetts"
+    },
+    {
+      "winner": "florida",
+      "loser": "north-carolina"
+    },
+    {
+      "winner": "maine",
+      "loser": "vermont"
+    },
+    {
+      "winner": "pennsylvania",
+      "loser": "virginia"
+    },
+    {
+      "winner": "pennsylvania",
+      "loser": "new-jersey"
+    },
+    {
+      "winner": "new-jersey",
+      "loser": "virginia"
+    },
+    {
+      "winner": "louisiana",
+      "loser": "new-york"
+    },
+    {
+      "winner": "georgia",
+      "loser": "new-hampshire"
+    },
+    {
+      "winner": "new-york",
+      "loser": "new-hampshire"
+    },
+    {
+      "winner": "maryland",
+      "loser": "rhode-island"
+    },
+    {
+      "winner": "maryland",
+      "loser": "delaware"
+    },
+    {
+      "winner": "vermont",
+      "loser": "maryland"
+    },
+    {
+      "winner": "louisiana",
+      "loser": "georgia"
+    },
+    {
+      "winner": "masachusetts",
+      "loser": "north-carolina"
+    },
+    {
+      "winner": "louisiana",
+      "loser": "florida"
+    },
+    {
+      "winner": "maine",
+      "loser": "connecticut"
+    },
+    {
+      "winner": "new-jersey",
+      "loser": "south-carolina"
+    },
+    {
+      "winner": "louisiana",
+      "loser": "south-carolina"
+    },
+    {
+      "winner": "new-york",
+      "loser": "masachusetts"
+    },
+    {
+      "winner": "new-hampshire",
+      "loser": "north-carolina"
+    },
+    {
+      "winner": "virginia",
+      "loser": "rhode-island"
+    },
+    {
+      "winner": "vermont",
+      "loser": "connecticut"
+    },
+    {
+      "winner": "florida",
+      "loser": "georgia"
+    },
+    {
+      "winner": "delaware",
+      "loser": "florida"
+    },
+    {
+      "winner": "maine",
+      "loser": "pennsylvania"
+    },
+    {
+      "winner": "connecticut",
+      "loser": "maryland"
+    },
+    {
+      "winner": "new-york",
+      "loser": "south-carolina"
+    },
+    {
+      "winner": "pennsylvania",
+      "loser": "vermont"
+    },
+    {
+      "winner": "virginia",
+      "loser": "maryland"
+    },
+    {
+      "winner": "rhode-island",
+      "loser": "south-carolina"
+    },
+    {
+      "winner": "masachusetts",
+      "loser": "new-hampshire"
+    },
+    {
+      "winner": "south-carolina",
+      "loser": "georgia"
+    },
+    {
+      "winner": "masachusetts",
+      "loser": "georgia"
+    },
+    {
+      "winner": "new-york",
+      "loser": "delaware"
+    },
+    {
+      "winner": "louisiana",
+      "loser": "vermont"
+    },
+    {
+      "winner": "new-jersey",
+      "loser": "vermont"
+    },
+    {
+      "winner": "rhode-island",
+      "loser": "delaware"
+    },
+    {
+      "winner": "florida",
+      "loser": "rhode-island"
+    },
+    {
+      "winner": "maryland",
+      "loser": "florida"
+    },
+    {
+      "winner": "virginia",
+      "loser": "new-york"
+    },
+    {
+      "winner": "virginia",
+      "loser": "vermont"
+    },
+    {
+      "winner": "connecticut",
+      "loser": "virginia"
+    },
+    {
+      "winner": "masachusetts",
+      "loser": "south-carolina"
+    },
+    {
+      "winner": "connecticut",
+      "loser": "new-jersey"
+    },
+    {
+      "winner": "new-york",
+      "loser": "maryland"
+    },
+    {
+      "winner": "pennsylvania",
+      "loser": "connecticut"
+    },
+    {
+      "winner": "pennsylvania",
+      "loser": "louisiana"
+    },
+    {
+      "winner": "rhode-island",
+      "loser": "masachusetts"
+    },
+    {
+      "winner": "georgia",
+      "loser": "north-carolina"
+    },
+    {
+      "winner": "louisiana",
+      "loser": "connecticut"
+    },
+    {
+      "winner": "florida",
+      "loser": "masachusetts"
+    },
+    {
+      "winner": "south-carolina",
+      "loser": "new-hampshire"
+    },
+    {
+      "winner": "maine",
+      "loser": "louisiana"
+    },
+    {
+      "winner": "vermont",
+      "loser": "rhode-island"
+    },
+    {
+      "winner": "delaware",
+      "loser": "georgia"
+    },
+    {
+      "winner": "new-jersey",
+      "loser": "new-york"
+    },
+    {
+      "winner": "florida",
+      "loser": "new-york"
+    },
+    {
+      "winner": "maryland",
+      "loser": "south-carolina"
+    },
+    {
+      "winner": "florida",
+      "loser": "vermont"
+    },
+    {
+      "winner": "maryland",
+      "loser": "masachusetts"
+    },
+    {
+      "winner": "new-york",
+      "loser": "rhode-island"
+    },
+    {
+      "winner": "florida",
+      "loser": "virginia"
+    },
+    {
+      "winner": "louisiana",
+      "loser": "virginia"
+    },
+    {
+      "winner": "maine",
+      "loser": "new-jersey"
+    },
+    {
+      "winner": "vermont",
+      "loser": "delaware"
+    },
+    {
+      "winner": "virginia",
+      "loser": "delaware"
+    },
+    {
+      "winner": "florida",
+      "loser": "new-jersey"
+    },
+    {
+      "winner": "connecticut",
+      "loser": "florida"
+    },
+    {
+      "winner": "delaware",
+      "loser": "new-hampshire"
+    },
+    {
+      "winner": "new-jersey",
+      "loser": "maryland"
+    },
+    {
+      "winner": "south-carolina",
+      "loser": "north-carolina"
+    },
+    {
+      "winner": "rhode-island",
+      "loser": "georgia"
+    },
+    {
+      "winner": "new-york",
+      "loser": "connecticut"
+    },
+    {
+      "winner": "vermont",
+      "loser": "masachusetts"
+    },
+    {
+      "winner": "vermont",
+      "loser": "south-carolina"
+    },
+    {
+      "winner": "new-jersey",
+      "loser": "rhode-island"
+    },
+    {
+      "winner": "delaware",
+      "loser": "north-carolina"
+    },
+    {
+      "winner": "louisiana",
+      "loser": "maryland"
+    },
+    {
+      "winner": "pennsylvania",
+      "loser": "florida"
+    },
+    {
+      "winner": "maryland",
+      "loser": "georgia"
+    },
+    {
+      "winner": "pennsylvania",
+      "loser": "new-york"
+    },
+    {
+      "winner": "virginia",
+      "loser": "south-carolina"
+    },
+    {
+      "winner": "connecticut",
+      "loser": "delaware"
+    },
+    {
+      "winner": "maine",
+      "loser": "virginia"
+    },
+    {
+      "winner": "maryland",
+      "loser": "new-hampshire"
+    },
+    {
+      "winner": "new-jersey",
+      "loser": "delaware"
+    },
+    {
+      "winner": "rhode-island",
+      "loser": "north-carolina"
+    },
+    {
+      "winner": "maine",
+      "loser": "new-york"
+    },
+    {
+      "winner": "connecticut",
+      "loser": "masachusetts"
+    },
+    {
+      "winner": "new-jersey",
+      "loser": "masachusetts"
+    },
+    {
+      "winner": "louisiana",
+      "loser": "rhode-island"
+    },
+    {
+      "winner": "florida",
+      "loser": "south-carolina"
+    },
+    {
+      "winner": "vermont",
+      "loser": "georgia"
+    },
+    {
+      "winner": "pennsylvania",
+      "loser": "maryland"
+    },
+    {
+      "winner": "virginia",
+      "loser": "new-hampshire"
+    },
+    {
+      "winner": "virginia",
+      "loser": "georgia"
+    },
+    {
+      "winner": "connecticut",
+      "loser": "south-carolina"
+    },
+    {
+      "winner": "louisiana",
+      "loser": "delaware"
+    },
+    {
+      "winner": "maryland",
+      "loser": "north-carolina"
+    },
+    {
+      "winner": "vermont",
+      "loser": "new-hampshire"
+    },
+    {
+      "winner": "new-york",
+      "loser": "georgia"
+    },
+    {
+      "winner": "maine",
+      "loser": "maryland"
+    },
+    {
+      "winner": "pennsylvania",
+      "loser": "rhode-island"
+    },
+    {
+      "winner": "louisiana",
+      "loser": "masachusetts"
+    },
+    {
+      "winner": "florida",
+      "loser": "new-hampshire"
+    },
+    {
+      "winner": "new-york",
+      "loser": "north-carolina"
+    },
+    {
+      "winner": "new-jersey",
+      "loser": "georgia"
+    },
+    {
+      "winner": "vermont",
+      "loser": "north-carolina"
+    },
+    {
+      "winner": "pennsylvania",
+      "loser": "delaware"
+    },
+    {
+      "winner": "maine",
+      "loser": "rhode-island"
+    },
+    {
+      "winner": "connecticut",
+      "loser": "new-hampshire"
+    },
+    {
+      "winner": "new-jersey",
+      "loser": "new-hampshire"
+    },
+    {
+      "winner": "virginia",
+      "loser": "north-carolina"
+    },
+    {
+      "winner": "maine",
+      "loser": "delaware"
+    },
+    {
+      "winner": "pennsylvania",
+      "loser": "masachusetts"
+    },
+    {
+      "winner": "pennsylvania",
+      "loser": "south-carolina"
+    },
+    {
+      "winner": "maine",
+      "loser": "masachusetts"
+    },
+    {
+      "winner": "louisiana",
+      "loser": "new-hampshire"
+    },
+    {
+      "winner": "connecticut",
+      "loser": "north-carolina"
+    },
+    {
+      "winner": "new-jersey",
+      "loser": "north-carolina"
+    },
+    {
+      "winner": "maine",
+      "loser": "south-carolina"
+    },
+    {
+      "winner": "pennsylvania",
+      "loser": "georgia"
+    },
+    {
+      "winner": "maine",
+      "loser": "georgia"
+    },
+    {
+      "winner": "louisiana",
+      "loser": "north-carolina"
+    },
+    {
+      "winner": "pennsylvania",
+      "loser": "new-hampshire"
+    },
+    {
+      "winner": "maine",
+      "loser": "new-hampshire"
+    },
+    {
+      "winner": "maine",
+      "loser": "north-carolina"
+    }
+  ],
+  "resultCode": "31D29950-4AC1-4D6B-89EE-DC13736589FE",
+  "completedAt": "2026-10-27T13:32:18.808Z",
+  "comparisonCount": 136,
+  "rankings": [
+    {
+      "id": "maine",
+      "name": "Maine",
+      "mu": 16.521507581856312,
+      "sigma": 3.8676541429408613,
+      "wins": 16,
+      "losses": 0,
+      "count": 16,
+      "elo": 1660.8603032742526,
+      "uncertainty": 154.70616571763446
+    },
+    {
+      "id": "pennsylvania",
+      "name": "Pennsylvania",
+      "mu": 14.07744186129404,
+      "sigma": 3.3923275445302314,
+      "wins": 15,
+      "losses": 1,
+      "count": 16,
+      "elo": 1563.0976744517616,
+      "uncertainty": 135.69310178120926
+    },
+    {
+      "id": "louisiana",
+      "name": "Louisiana",
+      "mu": 9.207531344550262,
+      "sigma": 2.970053506116517,
+      "wins": 13,
+      "losses": 3,
+      "count": 16,
+      "elo": 1368.3012537820105,
+      "uncertainty": 118.80214024466069
+    },
+    {
+      "id": "new-jersey",
+      "name": "New Jersey",
+      "mu": 6.206266183576472,
+      "sigma": 2.8512617014665436,
+      "wins": 12,
+      "losses": 4,
+      "count": 16,
+      "elo": 1248.250647343059,
+      "uncertainty": 114.05046805866175
+    },
+    {
+      "id": "connecticut",
+      "name": "Connecticut",
+      "mu": 5.771226105288407,
+      "sigma": 2.6318216369186533,
+      "wins": 11,
+      "losses": 5,
+      "count": 16,
+      "elo": 1230.8490442115362,
+      "uncertainty": 105.27286547674613
+    },
+    {
+      "id": "florida",
+      "name": "Florida",
+      "mu": 3.658513528014373,
+      "sigma": 2.4187589072702975,
+      "wins": 10,
+      "losses": 6,
+      "count": 16,
+      "elo": 1146.340541120575,
+      "uncertainty": 96.75035629081191
+    },
+    {
+      "id": "virginia",
+      "name": "Virginia",
+      "mu": 2.832391434149166,
+      "sigma": 2.728752027652347,
+      "wins": 10,
+      "losses": 6,
+      "count": 16,
+      "elo": 1113.2956573659667,
+      "uncertainty": 109.1500811060939
+    },
+    {
+      "id": "vermont",
+      "name": "Vermont",
+      "mu": 2.5274322592732044,
+      "sigma": 2.6688309248031983,
+      "wins": 10,
+      "losses": 6,
+      "count": 16,
+      "elo": 1101.0972903709282,
+      "uncertainty": 106.75323699212794
+    },
+    {
+      "id": "new-york",
+      "name": "New York",
+      "mu": 2.123574515596659,
+      "sigma": 2.5904021097526453,
+      "wins": 9,
+      "losses": 7,
+      "count": 16,
+      "elo": 1084.9429806238663,
+      "uncertainty": 103.61608439010581
+    },
+    {
+      "id": "maryland",
+      "name": "Maryland",
+      "mu": -0.4224973337976044,
+      "sigma": 2.7514905093995434,
+      "wins": 8,
+      "losses": 8,
+      "count": 16,
+      "elo": 983.1001066480958,
+      "uncertainty": 110.05962037598174
+    },
+    {
+      "id": "rhode-island",
+      "name": "Rhode Island",
+      "mu": -3.0255699230496274,
+      "sigma": 2.728755870206058,
+      "wins": 6,
+      "losses": 10,
+      "count": 16,
+      "elo": 878.9772030780149,
+      "uncertainty": 109.15023480824232
+    },
+    {
+      "id": "delaware",
+      "name": "Delaware",
+      "mu": -4.588929869845202,
+      "sigma": 2.896841937966645,
+      "wins": 5,
+      "losses": 11,
+      "count": 16,
+      "elo": 816.4428052061919,
+      "uncertainty": 115.8736775186658
+    },
+    {
+      "id": "masachusetts",
+      "name": "Massachusetts",
+      "mu": -6.612915072844889,
+      "sigma": 2.841890558676667,
+      "wins": 4,
+      "losses": 12,
+      "count": 16,
+      "elo": 735.4833970862044,
+      "uncertainty": 113.67562234706668
+    },
+    {
+      "id": "south-carolina",
+      "name": "South Carolina",
+      "mu": -7.052824797020025,
+      "sigma": 2.839018058547117,
+      "wins": 4,
+      "losses": 12,
+      "count": 16,
+      "elo": 717.887008119199,
+      "uncertainty": 113.56072234188468
+    },
+    {
+      "id": "georgia",
+      "name": "Georgia",
+      "mu": -11.25324418659492,
+      "sigma": 3.103268638559208,
+      "wins": 2,
+      "losses": 14,
+      "count": 16,
+      "elo": 549.8702325362033,
+      "uncertainty": 124.13074554236832
+    },
+    {
+      "id": "new-hampshire",
+      "name": "New Hampshire",
+      "mu": -13.27045741535547,
+      "sigma": 3.5385720977104635,
+      "wins": 1,
+      "losses": 15,
+      "count": 16,
+      "elo": 469.18170338578125,
+      "uncertainty": 141.54288390841853
+    },
+    {
+      "id": "north-carolina",
+      "name": "North Carolina",
+      "mu": -16.912550531135537,
+      "sigma": 3.7944687323261106,
+      "wins": 0,
+      "losses": 16,
+      "count": 16,
+      "elo": 323.4979787545785,
+      "uncertainty": 151.77874929304443
+    }
+  ]
+}
